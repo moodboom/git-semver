@@ -1,0 +1,49 @@
+{
+  "name": "git-semver",
+  "version": "1.0.0",
+  "description": "Easy semantic versioning of git repositories",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/moodboom/git-semver.git"
+  },
+  "keywords": [
+    "git"
+  ],
+  "author": "Michael Behrns-Miller",
+  "homepage": "https://gitlab.com/moodboom/git-semver#readme",
+  "homepage2": "https://bitpost.com/news/category/projects/rad-scripts/",
+  "license": "MIT",
+  "preferGlobal": true,
+  "bugs": {
+    "url": "https://gitlab.com/moodboom/git-semver/issues"
+  },
+  "dependencies": {
+    "rad-scripts": "file:../rad-scripts"
+  },
+  "bin": {
+    "git-semver": "git-semver-cmd.js",
+    "git-sync": "git-sync-cmd.js",
+    "git-sync-notag": "git-sync-notag-cmd.js",
+    "git-version": "git-version-cmd.js",
+    "git-version-clean": "git-version-clean-cmd.js",
+    "git-log": "git-log-cmd.js",
+    "git-branchlog": "git-branchlog-cmd.js",
+    "git-tag-list": "git-tag-list-cmd.js",
+    "git-next-build": "git-next-build-cmd.js",
+    "git-next-major": "git-next-major-cmd.js",
+    "git-next-minor": "git-next-minor-cmd.js",
+    "git-next-patch": "git-next-patch-cmd.js",
+    "git-skip": "git-skip-cmd.js",
+    "git-noskip": "git-noskip-cmd.js",
+    "git-skiplist": "git-skiplist-cmd.js",
+    "get-svn-rev": "get-svn-rev-cmd.js",
+    "get-svn-last-changed-rev": "get-svn-last-changed-rev-cmd.js",
+    "npm-update-version": "npm-update-version-cmd.js",
+    "git-semver-sync": "git-semver-sync-cmd.js"
+  }
+}
