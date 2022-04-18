@@ -1,6 +1,6 @@
 {
   "name": "@moodboom/git-semver",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Easy semantic versioning of git repositories",
   "type": "module",
   "main": "index.js",

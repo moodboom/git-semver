@@ -1,4 +1,4 @@
 'use strict';
 
-export * as rs from 'rad-scripts';
-export * as gs from './version-control.js';
+export * from 'rad-scripts';
+export * from './version-control.js';
