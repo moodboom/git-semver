@@ -6,6 +6,7 @@ import { parse_tag_parameters, npm_update_version, git_changes, git_sync } from 
 
 var tag_params = parse_tag_parameters(process.argv);
 
+
 // callback to STAMP VERSION into module
 const rs_stamp_callback_function = function(err, version) {
     if (err) throw err; // Check for the error and throw if it exists.
