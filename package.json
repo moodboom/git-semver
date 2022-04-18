@@ -1,6 +1,6 @@
 {
   "name": "@moodboom/git-semver",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Easy semantic versioning of git repositories",
   "type": "module",
   "main": "index.js",
@@ -45,6 +45,5 @@
     "get-svn-last-changed-rev": "get-svn-last-changed-rev-cmd.js",
     "npm-update-version": "npm-update-version-cmd.js",
     "git-semver-sync": "git-semver-sync-cmd.js"
-  },
-  "devDependencies": {}
+  }
 }
