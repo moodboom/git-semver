@@ -38,7 +38,7 @@ git_sync(process.cwd(),tag_params,rs_stamp_callback_function);
 if (changes)
 {
     // There were changes, so let's publish now.
-    rs.run_command_sync_to_console('npm publish');
+    rs.run_command_sync_to_console('npm publish --access public');
 }
 
 // Quietly reinstall, so we get any recently-made remote changes.

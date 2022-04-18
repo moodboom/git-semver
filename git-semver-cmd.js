@@ -9,8 +9,8 @@
 
 import * as rs from 'rad-scripts';
 
-
 var args = process.argv.slice(2);
+
 
 var cmds = [
     { name: 'git-sync'                  , desc: '[--major|--minor|--patch] [msg msg...] > stash, pull, pop, stamp, commit, tag, push'       },
