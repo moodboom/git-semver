@@ -17,7 +17,7 @@ const rs_stamp_callback_function = function(err, version) {
     rs.run_command_quietly('npm install -g');
 
     // Directly update README.md with usage, whoop
-    var readme = rs.run_command_sync('rad');
+    var readme = rs.run_command_sync('git-semver');
 
     // Let's add the version, and the most recent commits, to the readme, for fun.
     // Note that usage will not include this, only the README.md file.
