@@ -1,6 +1,7 @@
 #!/usr/bin/env nodeold
 
 import { normalize } from 'path';
+import { readFileSync, writeFileSync } from 'fs';
 import * as rs from 'rad-scripts';
 
 const unknown_version = 'unknown version';
@@ -530,10 +531,10 @@ export const npm_update_version = function(version) {
     var filename = 'package.json';
     try {
         console.log('Stamping version ['+version+'] into ['+filename+']...');
-        var origversion = fs.readFileSync(filename,'utf-8');
+        var origversion = readFileSync(filename,'utf-8');
         //   "version": "1.3.0",  ==>    "version": "###version###",
         var newversion = origversion.replace(/\"version\".*/, '\"version\": \"'+version+'\",');
-        fs.writeFileSync(filename, newversion,'utf-8');
+        writeFileSync(filename, newversion,'utf-8');
         // console.log(filename + " was updated...");
     }
     catch (err) {
@@ -583,10 +584,10 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
 
     process.chdir(lastVersionFolder);
 
-    var m  = parseInt(fs.readFileSync('major.txt', 'utf-8'));
-    var n  = parseInt(fs.readFileSync('minor.txt', 'utf-8'));
-    var p  = parseInt(fs.readFileSync('patch.txt', 'utf-8'));
-    var b  = parseInt(fs.readFileSync('build.txt', 'utf-8'));
+    var m  = parseInt(readFileSync('major.txt', 'utf-8'));
+    var n  = parseInt(readFileSync('minor.txt', 'utf-8'));
+    var p  = parseInt(readFileSync('patch.txt', 'utf-8'));
+    var b  = parseInt(readFileSync('build.txt', 'utf-8'));
 
     // Compare to parameters
     // If different, adjust and save
@@ -611,9 +612,9 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
         m = m2;
         n = 0;
         p = 0;
-        fs.writeFileSync('major.txt', m, 'utf-8');
-        fs.writeFileSync('minor.txt', n, 'utf-8');
-        fs.writeFileSync('patch.txt', p, 'utf-8');
+        writeFileSync('major.txt', m, 'utf-8');
+        writeFileSync('minor.txt', n, 'utf-8');
+        writeFileSync('patch.txt', p, 'utf-8');
 
     } else if (n2 != n) {
 
@@ -629,8 +630,8 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
         // Reset p
         n = n2;
         p = 0;
-        fs.writeFileSync('minor.txt', n, 'utf-8');
-        fs.writeFileSync('patch.txt', p, 'utf-8');
+        writeFileSync('minor.txt', n, 'utf-8');
+        writeFileSync('patch.txt', p, 'utf-8');
 
     } else if (p2 != p) {
 
@@ -642,13 +643,13 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
         }
 
         p = p2;
-        fs.writeFileSync('patch.txt', p, 'utf-8');
+        writeFileSync('patch.txt', p, 'utf-8');
 
     }
 
     // Write the new build version.
     b = b2;
-    fs.writeFileSync('build.txt', b, 'utf-8');
+    writeFileSync('build.txt', b, 'utf-8');
 
     return m+'.'+n+'.'+p+'.'+b;
 }

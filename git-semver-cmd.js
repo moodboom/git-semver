@@ -8,7 +8,6 @@
 // But we always provide access to all available substeps here too, to stay organized, centralized and documented.
 
 import * as rs from 'rad-scripts';
-
 var args = process.argv.slice(2);
 
 var cmds = [
@@ -28,17 +27,17 @@ var cmds = [
 
     // Minor commands
     
-    { name: 'list-commands'             , desc: '> lists all available commands\n'   },
+    { name: 'list-commands'             , desc: 'lists all available commands\n'   },
 
-    { name: 'git-version'               , desc: '> returns the current git semantic version, based on [git describe]'                       },
-    { name: 'git-version-clean'         , desc: '> returns MAJOR.MINOR.PATCH git version (suffix stripped)\n'                               },
-    { name: 'git-next-major'            , desc: '> returns what would be the next MAJOR semantic version'                                   },
-    { name: 'git-next-minor'            , desc: '> returns what would be the next MINOR semantic version'                                   },
-    { name: 'git-next-patch'            , desc: '> returns what would be the next PATCH semantic version'                                   },
-    { name: 'git-next-build'            , desc: '> returns what would be the next BUILD semantic version (less common)\n'                   },
+    { name: 'git-version'               , desc: 'returns the current git semantic version, based on [git describe]'                       },
+    { name: 'git-version-clean'         , desc: 'returns MAJOR.MINOR.PATCH git version (suffix stripped)\n'                               },
+    { name: 'git-next-major'            , desc: 'returns what would be the next MAJOR semantic version'                                   },
+    { name: 'git-next-minor'            , desc: 'returns what would be the next MINOR semantic version'                                   },
+    { name: 'git-next-patch'            , desc: 'returns what would be the next PATCH semantic version'                                   },
+    { name: 'git-next-build'            , desc: 'returns what would be the next BUILD semantic version (less common)\n'                   },
 
-    { name: 'get-svn-rev'               , desc: '> parses and returns the svn current revision from [svn info]'                             },
-    { name: 'get-svn-last-changed-rev'  , desc: '> parses and returns the svn last-changed revision from [svn info]\n'                      }
+    { name: 'get-svn-rev'               , desc: 'parses and returns the svn current revision from [svn info]'                             },
+    { name: 'get-svn-last-changed-rev'  , desc: 'parses and returns the svn last-changed revision from [svn info]\n'                      }
 
 ];
 
