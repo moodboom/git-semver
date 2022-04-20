@@ -1,6 +1,7 @@
 #!/usr/bin/env nodeold
 
 import { normalize } from 'path';
+import { exec, execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import * as rs from 'rad-scripts';
 
@@ -214,17 +215,12 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
 // =========== git_clone: clones a repo ============
 export const git_clone = function(remote_repo,local_folder,sync)
 {
-    var exec;
-    if (sync)
-        exec = require('child_process').execSync;
-    else 
-        exec = require('child_process').exec;
-
     // Make sure the task specifies the full target folder since these may be called async.
     // i.e., don't use process.cwd()...
     var cmd1 = 'git clone ' + remote_repo + ' ' + local_folder;
 
-    exec(cmd1, function(error, stdout, stderr) {
+    const e = sync ? execSync : exec;
+    e(cmd1, function(error, stdout, stderr) {
 
         if (stderr) {
 
@@ -580,7 +576,6 @@ export const svn_rev = function () {
 // ============ build_semantic_version: builds "next" historical semver, with validation using stored result ===============
 export const build_semantic_version = function (major,minor,patch,build,lastVersionFolder) {
 
-    var fs = require('fs');
     var args = process.argv.slice(2);
 
     process.chdir(lastVersionFolder);
