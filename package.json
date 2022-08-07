@@ -23,7 +23,7 @@
     "url": "https://gitlab.com/moodboom/git-semver/issues"
   },
   "dependencies": {
-    "rad-scripts": "^4.10.36"
+    "rad-scripts": "^4.10.38"
   },
   "bin": {
     "git-semver": "git-semver-cmd.js",
