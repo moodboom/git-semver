@@ -2,6 +2,7 @@
 
 import { normalize } from 'path';
 import { exec, execSync } from 'child_process';
+import * as windowsize from 'window-size';
 import { readFileSync, writeFileSync } from 'fs';
 import * as rs from 'rad-scripts';
 
@@ -403,8 +404,10 @@ export const git_branchlog = function(tag_params) {
 // =========== git_log: concise pretty log ============
 export const git_log = function(tag_params) {
 
-    var head = rs.run_command_sync('tput lines').trim() - 2;
-    var cols = rs.run_command_sync('tput cols').trim() - 2;
+    // Getting terminal size is nasty, so use a package.
+    const { width, height } = windowsize.default || { width: 120, height: 40 };
+    var cols = width - 2;
+    var head = height - 2;
 
     if (tag_params.comment != null && tag_params.comment.length)
         head = tag_params.comment
@@ -416,7 +419,7 @@ export const git_log = function(tag_params) {
 
         var hash = time = tag = who = 6
         var comm = cols - hash - time - tag - who - 3
-        rs.run_command_sync_to_console("git log "+branch+" --pretty=\"%h %C(auto,blue)%>("+time+",trunc)%ad %C(auto,reset)%<("+comm+",trunc)%s %C(auto,red)%>("+tag+",trunc)%D %C(auto,white)%>("+who+",trunc)%an\" --date=relative -"+head);
+        rs.run_command_sync_to_console(`git log ${branch} --pretty="%h %C(auto,blue)%>(${time},trunc)%ad %C(auto,reset)%<(${comm},trunc)%s %C(auto,red)%>(${tag},trunc)%D %C(auto,white)%>(${who},trunc)%an" --date=relative -${head}`);
 
     } else {
 
@@ -428,7 +431,9 @@ export const git_log = function(tag_params) {
 
         // get log, prettified; see here:
         //     http://stackoverflow.com/questions/1441010/the-shortest-possible-output-from-git-log-containing-author-and-date
-        rs.run_command_sync_to_console("git log "+branch+" --pretty=\"%h %C(auto,blue)%>("+time+",trunc)%ad %C(auto,reset)%<("+comm+",trunc)%s %C(auto,red)%>("+tag+",trunc)%D %C(auto,white)%>("+who+",trunc)%an\" --date=relative -"+head);
+        rs.run_command_sync_to_console(
+            `git log ${branch} --pretty="%h %C(auto,blue)%>(${time},trunc)%ad %C(auto,reset)%<(${comm},trunc)%s %C(auto,red)%>(${tag},trunc)%D %C(auto,white)%>(${who},trunc)%an" --date=relative -${head}`
+        );
     }
 }
 
