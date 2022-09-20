@@ -404,7 +404,7 @@ export const git_branchlog = function(tag_params) {
 // =========== git_log: concise pretty log ============
 export const git_log = function(tag_params) {
 
-    // Getting terminal size is nasty, so use a package.
+    // Getting terminal size is nasty, so use a package that works "often" but not always, sigh.
     const { width, height } = windowsize.default || { width: 120, height: 40 };
     var cols = width - 2;
     var head = height - 2;
