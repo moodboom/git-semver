@@ -1,6 +1,6 @@
 {
   "name": "@moodboom/git-semver",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Easy semantic versioning of git repositories",
   "type": "module",
   "main": "index.js",
@@ -23,8 +23,8 @@
     "url": "https://gitlab.com/moodboom/git-semver/issues"
   },
   "dependencies": {
-    "rad-scripts": "^4.10.38",
-    "window-size": "^1.1.1"
+    "rad-scripts": "^4.10.0",
+    "window-size": "^1.1.0"
   },
   "bin": {
     "git-semver": "git-semver-cmd.js",

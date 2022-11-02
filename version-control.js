@@ -538,6 +538,12 @@ export const npm_update_version = function(version) {
         var newversion = origversion.replace(/\"version\".*/, '\"version\": \"'+version+'\",');
         writeFileSync(filename, newversion,'utf-8');
         // console.log(filename + " was updated...");
+
+        // ALWAYS update dependencies.
+        // This is an opinionated choice, it will break you faster, but get you fixed faster as well.
+        // It is also used here to update our new version in the package-lock.json file.
+        console.log('Updating ALL dependencies...');
+        rs.run_command_sync_to_console("npm update");
     }
     catch (err) {
         console.log(filename + ' could not be updated: ' + err);
