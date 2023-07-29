@@ -12,17 +12,8 @@ const unknown_version = 'unknown version';
 
 //=========== git_changes: gets any changes in the current folder; returns blank if none ============
 export const git_changes = function(folder) {
-
-    // Steps will be called synchronously so we can use cd.
-    process.chdir(folder);
-
-    // Outgoing changes: git log @{u}.. Incoming changes: git log ..@{u}
-
-    // NOTE: this will tell us if there are recent commits that have not been pushed yet.
-    // We actually do not want that, the rebase pull will take care of those.
-    // var changes = rs.run_command_sync("git log @{u}..");
-
-    var changes = rs.run_command_sync("git status -uno --porcelain");
+    // NOTE:  rebase pull will take care of recent commits that have not been pushed yet.
+    var changes = rs.run_command_sync(`cd ${folder} && git status -uno --porcelain`);
     return changes;
 }
 
