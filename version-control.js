@@ -20,12 +20,8 @@ export const git_changes = function(folder) {
 
 //=========== git_remote_changes: returns if remote changes exist, blank if none ============
 export const git_remote_changes = function(folder) {
-
-    // Steps will be called synchronously so we can use cd.
-    process.chdir(folder);
-
-    rs.run_command_quietly('git remote update');
-    return rs.run_command_sync("git log HEAD..HEAD@{u} --oneline");
+    rs.run_command_quietly(`cd ${folder} && git remote update`);
+    return rs.run_command_sync(`cd ${folder} && git log HEAD..HEAD@{u} --oneline`);
 }
 
 
