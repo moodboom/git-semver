@@ -11,7 +11,7 @@ const unknown_version = 'unknown version';
 
 
 //=========== git_changes: gets any changes in the current folder; returns blank if none ============
-export const git_changes = function(folder) {
+export const git_changes = function (folder) {
     // NOTE:  rebase pull will take care of recent commits that have not been pushed yet.
     var changes = rs.run_command_sync(`cd ${folder} && git status -uno --porcelain`);
     return changes;
@@ -19,7 +19,7 @@ export const git_changes = function(folder) {
 
 
 //=========== git_remote_changes: returns if remote changes exist, blank if none ============
-export const git_remote_changes = function(folder) {
+export const git_remote_changes = function (folder) {
     rs.run_command_quietly(`cd ${folder} && git remote update`);
     return rs.run_command_sync(`cd ${folder} && git log HEAD..HEAD@{u} --oneline`);
 }
@@ -50,10 +50,9 @@ export const git_remote_changes = function(folder) {
 //
 // We will go with the fourth.
 //
-export const git_sync = function(folder,tag_params,stamp_callback_function)
-{
+export const git_sync = function (folder, tag_params, stamp_callback_function) {
     Array.prototype.plus = function (other_array) {
-        other_array.forEach(function(v) {this.push(v)}, this);
+        other_array.forEach(function (v) { this.push(v) }, this);
     }
 
     var blip = "";
@@ -65,28 +64,27 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
 
         var remote_changes = git_remote_changes(folder);
         if (changes) {
-            changes = (changes.length>0);
+            changes = (changes.length > 0);
         }
         if (remote_changes) {
-            remote_changes = (remote_changes.length>0);
+            remote_changes = (remote_changes.length > 0);
         }
 
         var any_changes = changes || remote_changes;
 
         // Currently we bail out before printing "---" blip, as it's fairly chatty.
-        if (!any_changes)
-        {
+        if (!any_changes) {
             // There may be more to do after we return, doh!
             // process.exit(0);
-            
+
             return 0;
         }
 
         // Build blip.
-             if (changes && remote_changes && !tag_params.pull_only) { blip = '<=>'; }
-        else if (changes && !tag_params.pull_only                  ) { blip = '>>>'; }
-        else if (remote_changes                                    ) { blip = '<<<'; }
-        else                                                         { blip = '---'; }
+        if (changes && remote_changes && !tag_params.pull_only) { blip = '<=>'; }
+        else if (changes && !tag_params.pull_only) { blip = '>>>'; }
+        else if (remote_changes) { blip = '<<<'; }
+        else { blip = '---'; }
 
         // We can't get the version here because we haven't done a pull yet and we don't yet know what it will be.     
         // if (git_version_valid(version)    ) { blip += ' ['+version+']'; }
@@ -97,8 +95,7 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
 
         // If comment is anything other than blank, build a proper comment format that we can slap on the end of cmd.
         var comment = tag_params.comment;
-        if (comment.length > 0)
-        {
+        if (comment.length > 0) {
             comment = " -m \"" + comment + "\"";
         }
 
@@ -120,7 +117,7 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
         // We are now ready to push.  Bail out if we only wanted pull.
         if (tag_params.pull_only)
             return 0;
-        
+
         if (changes) {
             if (tag_params.notag) {
 
@@ -133,9 +130,9 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
                 // We had to wait until after the pull,
                 // since there may have been newer REMOTE version tags.
                 var version;
-                     if (tag_params.major) { version = git_next_major(); }
+                if (tag_params.major) { version = git_next_major(); }
                 else if (tag_params.minor) { version = git_next_minor(); }
-                else                       { version = git_next_patch(); }
+                else { version = git_next_patch(); }
                 if (!git_version_valid(version)) {
                     console.log("Can't determine 'next' version of current tag...");
                     process.exit(1);
@@ -153,8 +150,7 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
                 //      };
                 //      git_sync('.',tag_params,app_stamp_callback_function);
                 //
-                if (stamp_callback_function)
-                {
+                if (stamp_callback_function) {
                     // We don't want to throw an error, so we pass null for the error argument
                     // See: http://stackoverflow.com/questions/19739755/nodejs-callbacks-simple-example
                     stamp_callback_function(null, version);
@@ -188,31 +184,30 @@ export const git_sync = function(folder,tag_params,stamp_callback_function)
         // If blip is not set, we had an earlier error in just trying to connect to the repo.
         if (blip == "") {
             console.log('----------------------------------');
-            console.log("*** ["+folder+"] WARNING: git-sync could not connect to this repo...");
+            console.log("*** [" + folder + "] WARNING: git-sync could not connect to this repo...");
             console.log('----------------------------------');
         } else {
-            console.log("*** ["+folder+"] WARNING: git-sync did not complete, check repo for conflicts...");
+            console.log("*** [" + folder + "] WARNING: git-sync did not complete, check repo for conflicts...");
             console.log('----------------------------------');
         }
-        
+
         return -1;
     }
 }
 
 
 // =========== git_clone: clones a repo ============
-export const git_clone = function(remote_repo,local_folder,sync)
-{
+export const git_clone = function (remote_repo, local_folder, sync) {
     // Make sure the task specifies the full target folder since these may be called async.
     // i.e., don't use process.cwd()...
     var cmd1 = 'git clone ' + remote_repo + ' ' + local_folder;
 
     const e = sync ? execSync : exec;
-    e(cmd1, function(error, stdout, stderr) {
+    e(cmd1, function (error, stdout, stderr) {
 
         if (stderr) {
 
-            if (stdout.length > 0 ) console.log(stdout);
+            if (stdout.length > 0) console.log(stdout);
             console.log(stderr);
 
         } else {
@@ -238,7 +233,7 @@ export const git_version = function () {
         // The user will need to commit first to create HEAD.
         // We COULD try committing... but that is fraught with peril to do right here...
         if (!git_version_valid(desc)) {
-            console.log("Unable to tag - perhaps you need to make an initial commit first to actually create HEAD.\nOutput:\n"+tagattempt+"\n");
+            console.log("Unable to tag - perhaps you need to make an initial commit first to actually create HEAD.\nOutput:\n" + tagattempt + "\n");
             return unknown_version;
         }
     }
@@ -278,51 +273,51 @@ export const git_version_valid = function (version) {
 // NOTE: These are used by git-sync to determine the "next" version.
 
 // =========== git_next_major ============
-export const git_next_major = function() {
+export const git_next_major = function () {
     var desc = git_version();
     if (desc == unknown_version) return desc;
     return next_major(desc);
 }
-export const next_major = function(desc) {
+export const next_major = function (desc) {
     var tokens = desc.match(/([0-9]*).*/);
     var major = parseInt(tokens[1]) + 1;
     if (major == null) return unknown_version;
 
-    return major+".0.0";
+    return major + ".0.0";
 }
 
 
 // =========== git_next_minor ============
-export const git_next_minor = function() {
+export const git_next_minor = function () {
     var desc = git_version();
     if (desc == unknown_version) return desc;
     return next_minor(desc);
 }
-export const next_minor = function(desc) {
+export const next_minor = function (desc) {
     var tokens = desc.match(/([0-9]*).([0-9]*)/);
     var major = tokens[1];
     var minor = parseInt(tokens[2]) + 1;
     if (major == null || minor == null) return unknown_version;
 
-    return major+"."+minor+".0";
+    return major + "." + minor + ".0";
 }
 
 
 // =========== git_next_patch ============
-export const git_next_patch = function() {
+export const git_next_patch = function () {
 
     var desc = git_version();
     if (desc == unknown_version) return desc;
     return next_patch(desc);
 }
-export const next_patch = function(desc) {
+export const next_patch = function (desc) {
     var tokens = desc.match(/([0-9]*).([0-9]*).([0-9]*)/);
     var major = tokens[1];
     var minor = tokens[2];
     var patch = parseInt(tokens[3]) + 1;
     if (major == null || minor == null || patch == null) return unknown_version;
 
-    return major+"."+minor+"."+patch;
+    return major + "." + minor + "." + patch;
 }
 
 
@@ -351,14 +346,14 @@ export const next_build = function (desc) {
 
 
 // =========== git_tag_list: list tags, including 1 line from the annotaged tag's commit message ============
-export const git_tag_list = function(tag_params) {
+export const git_tag_list = function (tag_params) {
 
     var head = 10
     if (tag_params.comment != null && tag_params.comment.length)
-	head = tag_params.comment
-	
+        head = tag_params.comment
+
     // get tags, then sort output numerically
-    rs.run_command_sync_to_console("git tag -n|sort -V -r|head -"+head);
+    rs.run_command_sync_to_console("git tag -n|sort -V -r|head -" + head);
 
     // OLD way, output does not pipe properly if we don't sync_to_console
     // return rs.run_command_sync("git tag -n | sort -n | tail "+message);  <-- doesn't pipe
@@ -366,7 +361,7 @@ export const git_tag_list = function(tag_params) {
 
 
 // =========== git_branchlog: show a concise branch merge history ============
-export const git_branchlog = function(tag_params) {
+export const git_branchlog = function (tag_params) {
 
     // branches, prettified; see here:
     //     https://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git
@@ -389,7 +384,7 @@ export const git_branchlog = function(tag_params) {
 
 
 // =========== git_log: concise pretty log ============
-export const git_log = function(tag_params) {
+export const git_log = function (tag_params) {
 
     // Getting terminal size is nasty, so use a package that works "often" but not always, sigh.
     const { width, height } = windowsize.default || { width: 120, height: 40 };
@@ -402,43 +397,43 @@ export const git_log = function(tag_params) {
     if (tag_params.branch != null && tag_params.branch.length)
         branch = tag_params.branch
 
+    const hash = 9; // was 7; minimum hash gets bigger with more commits
+    let time, tag, who, comm;
     if (cols < 70) {
-
-        var hash = time = tag = who = 6
-        var comm = cols - hash - time - tag - who - 3
-        rs.run_command_sync_to_console(`git log ${branch} --pretty="%h %C(auto,blue)%>(${time},trunc)%ad %C(auto,reset)%<(${comm},trunc)%s %C(auto,red)%>(${tag},trunc)%D %C(auto,white)%>(${who},trunc)%an" --date=relative -${head}`);
-
+        time = tag = who = 6;
+        comm = cols - hash - time - tag - who - 3;
+        if (comm < 1) {
+            console.log(`Can't fit`);
+            exit(1);
+        }
     } else {
-
-        var hash = 7
-        var time = 12
-        var tag  = 13
-        var who  = 28
-        var comm = cols - hash - time - tag - who - 3
-
-        // get log, prettified; see here:
-        //     http://stackoverflow.com/questions/1441010/the-shortest-possible-output-from-git-log-containing-author-and-date
-        rs.run_command_sync_to_console(
-            `git log ${branch} --pretty="%h %C(auto,blue)%>(${time},trunc)%ad %C(auto,reset)%<(${comm},trunc)%s %C(auto,red)%>(${tag},trunc)%D %C(auto,white)%>(${who},trunc)%an" --date=relative -${head}`
-        );
+        time = 12;
+        tag = 13;
+        who = 28;
+        comm = cols - hash - time - tag - who - 3;
     }
+    // get log, prettified; see here:
+    //     http://stackoverflow.com/questions/1441010/the-shortest-possible-output-from-git-log-containing-author-and-date
+    rs.run_command_sync_to_console(
+        `git log ${branch} --pretty="%>(${hash},trunc)%h %C(auto,blue)%>(${time},trunc)%ad %C(auto,reset)%<(${comm},trunc)%s %C(auto,red)%>(${tag},trunc)%D %C(auto,white)%>(${who},trunc)%an" --date=relative -${head}`
+    );
 }
 
 
 //=========== git_skip: tell git to start ignoring upstream and local changes to the given file ============
-export const git_skip = function(file) {
-    rs.run_command_sync_to_console("git update-index --skip-worktree "+file);
+export const git_skip = function (file) {
+    rs.run_command_sync_to_console("git update-index --skip-worktree " + file);
 }
 
 
 //=========== git_noskip: tell git to stop ignoring upstream and local changes to the given file ============
-export const git_noskip = function(file) {
-    rs.run_command_sync_to_console("git update-index --no-skip-worktree "+file);
+export const git_noskip = function (file) {
+    rs.run_command_sync_to_console("git update-index --no-skip-worktree " + file);
 }
 
 
 //=========== git_skiplist: list the files for which git is currently ignoring upstream and local changes ============
-export const git_skiplist = function() {
+export const git_skiplist = function () {
     try {
         rs.run_command_sync_to_console("git ls-files -v . | grep ^S");
     }
@@ -448,7 +443,7 @@ export const git_skiplist = function() {
 
 
 //=========== git_folder_from_url: extract top level folder name ============
-export const git_folder_from_url = function(url) {
+export const git_folder_from_url = function (url) {
 
     // Get project name out of this:
     // ssh://user@me.com:1000/subdirs/folder.git
@@ -462,7 +457,7 @@ export const git_folder_from_url = function(url) {
 
 
 // =========== parse_tag_parameters: utility commonly needed to parse tag-based command line parameters ============
-export const parse_tag_parameters = function(argv,noslice) {
+export const parse_tag_parameters = function (argv, noslice) {
 
     // Typical node argv sets include [#path#/node #path#/node_cmd param1 param2 ...]
     // By default, we slice off the first two, but some callers do that themselves.
@@ -480,22 +475,22 @@ export const parse_tag_parameters = function(argv,noslice) {
     var branch = "";
 
     // Check for "first" params.
-         if (args[0] == '--major'       ||args[0] == '-j' ) { major = 1; args = args.slice(1); }
-    else if (args[0] == '--minor'       ||args[0] == '-n' ) { minor = 1; args = args.slice(1); }
-    else if (args[0] == '--pull-only'   ||args[0] == '-p' ) { pull_only = 1; args = args.slice(1); }
+    if (args[0] == '--major' || args[0] == '-j') { major = 1; args = args.slice(1); }
+    else if (args[0] == '--minor' || args[0] == '-n') { minor = 1; args = args.slice(1); }
+    else if (args[0] == '--pull-only' || args[0] == '-p') { pull_only = 1; args = args.slice(1); }
 
     // TODO update this to allow any order of parameters (right now they must come in this order).
     // Prolly use a param module, big boy...
-    if (args[0] == '--branch'      ||args[0] == '-b' ) { branch = args[1]; args = args.slice(2); }
-    if (args[0] == '--with-commits'||args[0] == '-c' ) { with_commits = 1; args = args.slice(1); }
-    if (args[0] == '--all'         ||args[0] == '-a' ) { all = 1; args = args.slice(1); }
+    if (args[0] == '--branch' || args[0] == '-b') { branch = args[1]; args = args.slice(2); }
+    if (args[0] == '--with-commits' || args[0] == '-c') { with_commits = 1; args = args.slice(1); }
+    if (args[0] == '--all' || args[0] == '-a') { all = 1; args = args.slice(1); }
     // Do it again to handle more slot ordering.  Hackery.
-    if (args[0] == '--branch'      ||args[0] == '-b' ) { branch = args[1]; args = args.slice(2); }
-    if (args[0] == '--with-commits'||args[0] == '-c' ) { with_commits = 1; args = args.slice(1); }
-    if (args[0] == '--all'         ||args[0] == '-a' ) { all = 1; args = args.slice(1); }
-    if (args[0] == '--branch'      ||args[0] == '-b' ) { branch = args[1]; args = args.slice(2); }
-    if (args[0] == '--with-commits'||args[0] == '-c' ) { with_commits = 1; args = args.slice(1); }
-    if (args[0] == '--all'         ||args[0] == '-a' ) { all = 1; args = args.slice(1); }
+    if (args[0] == '--branch' || args[0] == '-b') { branch = args[1]; args = args.slice(2); }
+    if (args[0] == '--with-commits' || args[0] == '-c') { with_commits = 1; args = args.slice(1); }
+    if (args[0] == '--all' || args[0] == '-a') { all = 1; args = args.slice(1); }
+    if (args[0] == '--branch' || args[0] == '-b') { branch = args[1]; args = args.slice(2); }
+    if (args[0] == '--with-commits' || args[0] == '-c') { with_commits = 1; args = args.slice(1); }
+    if (args[0] == '--all' || args[0] == '-a') { all = 1; args = args.slice(1); }
 
     // We used to actually get the version here.
     // The reason we CAN'T is that there may be newer REMOTE version tags that we haven't pulled at this time.
@@ -504,26 +499,26 @@ export const parse_tag_parameters = function(argv,noslice) {
     var comment = rs.combine_params(args);
 
     return {
-        "major" : major,
-        "minor" : minor,
-        "pull_only" : pull_only,
-        "comment" : comment,
-        "branch" : branch,
-        "with_commits" : with_commits,
-        "all" : all
+        "major": major,
+        "minor": minor,
+        "pull_only": pull_only,
+        "comment": comment,
+        "branch": branch,
+        "with_commits": with_commits,
+        "all": all
     };
 }
 
 
 // =========== npm_update_version ============
-export const npm_update_version = function(version) {
+export const npm_update_version = function (version) {
     var filename = 'package.json';
     try {
-        console.log('Stamping version ['+version+'] into ['+filename+']...');
-        var origversion = readFileSync(filename,'utf-8');
+        console.log('Stamping version [' + version + '] into [' + filename + ']...');
+        var origversion = readFileSync(filename, 'utf-8');
         //   "version": "1.3.0",  ==>    "version": "###version###",
-        var newversion = origversion.replace(/\"version\".*/, '\"version\": \"'+version+'\",');
-        writeFileSync(filename, newversion,'utf-8');
+        var newversion = origversion.replace(/\"version\".*/, '\"version\": \"' + version + '\",');
+        writeFileSync(filename, newversion, 'utf-8');
         // console.log(filename + " was updated...");
 
         // ALWAYS update dependencies.
@@ -572,16 +567,16 @@ export const svn_rev = function () {
 
 
 // ============ build_semantic_version: builds "next" historical semver, with validation using stored result ===============
-export const build_semantic_version = function (major,minor,patch,build,lastVersionFolder) {
+export const build_semantic_version = function (major, minor, patch, build, lastVersionFolder) {
 
     var args = process.argv.slice(2);
 
     process.chdir(lastVersionFolder);
 
-    var m  = parseInt(readFileSync('major.txt', 'utf-8'));
-    var n  = parseInt(readFileSync('minor.txt', 'utf-8'));
-    var p  = parseInt(readFileSync('patch.txt', 'utf-8'));
-    var b  = parseInt(readFileSync('build.txt', 'utf-8'));
+    var m = parseInt(readFileSync('major.txt', 'utf-8'));
+    var n = parseInt(readFileSync('minor.txt', 'utf-8'));
+    var p = parseInt(readFileSync('patch.txt', 'utf-8'));
+    var b = parseInt(readFileSync('build.txt', 'utf-8'));
 
     // Compare to parameters
     // If different, adjust and save
@@ -590,15 +585,14 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
     var p2 = patch;
     var b2 = build;
 
-    if (m2 != m)
-    {
+    if (m2 != m) {
         // Validate
         if (
-                m2 != m + 1
-            ||	n2 != 0
-            ||	p2 != 0
+            m2 != m + 1
+            || n2 != 0
+            || p2 != 0
         ) {
-            console.log('New major version provided incorrectly: old('+m+'.'+n+'.'+p+'.'+b+") new("+m2+'.'+n2+'.'+p2+'.'+b2+')');
+            console.log('New major version provided incorrectly: old(' + m + '.' + n + '.' + p + '.' + b + ") new(" + m2 + '.' + n2 + '.' + p2 + '.' + b2 + ')');
             process.exit(1);
         }
 
@@ -614,10 +608,10 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
 
         // Validate
         if (
-                n2 != n + 1
-            ||	p2 != 0
+            n2 != n + 1
+            || p2 != 0
         ) {
-            console.log('New minor version provided incorrectly: old('+m+'.'+n+'.'+p+'.'+b+") new("+m2+'.'+n2+'.'+p2+'.'+b2+')');
+            console.log('New minor version provided incorrectly: old(' + m + '.' + n + '.' + p + '.' + b + ") new(" + m2 + '.' + n2 + '.' + p2 + '.' + b2 + ')');
             process.exit(1);
         }
 
@@ -630,9 +624,8 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
     } else if (p2 != p) {
 
         // Validate
-        if ( p2 != p + 1 )
-        {
-            console.log('New patch version provided incorrectly: old('+m+'.'+n+'.'+p+'.'+b+") new("+m2+'.'+n2+'.'+p2+'.'+b+')');
+        if (p2 != p + 1) {
+            console.log('New patch version provided incorrectly: old(' + m + '.' + n + '.' + p + '.' + b + ") new(" + m2 + '.' + n2 + '.' + p2 + '.' + b + ')');
             process.exit(1);
         }
 
@@ -645,5 +638,5 @@ export const build_semantic_version = function (major,minor,patch,build,lastVers
     b = b2;
     writeFileSync('build.txt', b, 'utf-8');
 
-    return m+'.'+n+'.'+p+'.'+b;
+    return m + '.' + n + '.' + p + '.' + b;
 }
