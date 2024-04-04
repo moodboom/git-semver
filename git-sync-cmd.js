@@ -30,5 +30,5 @@ import { parse_tag_parameters, git_sync } from './version-control.js';
 //
 // See git-semver-sync-cmd.js for an example of how to make your own custom sync command.
 
-var tag_params = parse_tag_parameters(process.argv);
-git_sync(process.cwd(),tag_params);
+var tag_params = parse_tag_parameters( process.argv );
+git_sync( process.cwd(),tag_params );

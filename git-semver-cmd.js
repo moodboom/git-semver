@@ -9,51 +9,51 @@
 
 import * as rs from 'rad-scripts';
 
-var args = process.argv.slice(2);
+var args = process.argv.slice( 2 );
 
 
 var cmds = [
-    { name: 'git-sync'                  , desc: '[--major|--minor|--patch] [msg msg...] > stash, pull, pop, stamp, commit, tag, push'       },
-    { name: 'git-sync-notag'            , desc: '> a git-sync version to commit code without a tag; bad form perhaps, but up to you\n'      },
+  { name: 'git-sync'                  , desc: '[--major|--minor|--patch] [msg msg...] > stash, pull, pop, stamp, commit, tag, push'       },
+  { name: 'git-sync-notag'            , desc: '> a git-sync version to commit code without a tag; bad form perhaps, but up to you\n'      },
 
-    { name: 'git-log'                   , desc: '[--branch|-b name] [count] > an opinionated pretty colored git log, clipped to ~110 chars' },
-    { name: 'git-branchlog'             , desc: '[--branch|-b name OR -all|-a] [--with-commits|-c] > an opinionated branch summary log'     },
-    { name: 'git-tag-list'              , desc: '> list tags, including one line from the annotaged tag\'s commit message\n'                },
+  { name: 'git-log'                   , desc: '[--branch|-b name] [count] > an opinionated pretty colored git log, clipped to ~110 chars' },
+  { name: 'git-branchlog'             , desc: '[--branch|-b name OR -all|-a] [--with-commits|-c] > an opinionated branch summary log'     },
+  { name: 'git-tag-list'              , desc: '> list tags, including one line from the annotaged tag\'s commit message\n'                },
 
-    { name: 'git-skip'                  , desc: '[file] > tell git to start ignoring upstream and local changes to the given file'          },
-    { name: 'git-noskip'                , desc: '[file] > tell git to stop ignoring upstream and local changes to the given file'           },
-    { name: 'git-skiplist'              , desc: '> list the files for which git is currently ignoring upstream and local changes\n'         },
+  { name: 'git-skip'                  , desc: '[file] > tell git to start ignoring upstream and local changes to the given file'          },
+  { name: 'git-noskip'                , desc: '[file] > tell git to stop ignoring upstream and local changes to the given file'           },
+  { name: 'git-skiplist'              , desc: '> list the files for which git is currently ignoring upstream and local changes\n'         },
 
-    { name: 'npm-update-version'        , desc: '[version] > inject the current version into package.json'                                  },
-    { name: 'git-semver-sync'           , desc: '[--major|--minor] [msg msg...] > dogfooding 101: use git-semver to publish git-semver\n' },
+  { name: 'npm-update-version'        , desc: '[version] > inject the current version into package.json'                                  },
+  { name: 'git-semver-sync'           , desc: '[--major|--minor] [msg msg...] > dogfooding 101: use git-semver to publish git-semver\n' },
 
-    // Minor commands
+  // Minor commands
     
-    { name: 'list-commands'             , desc: 'lists all available commands\n'   },
+  { name: 'list-commands'             , desc: 'lists all available commands\n'   },
 
-    { name: 'git-version'               , desc: 'returns the current git semantic version, based on [git describe]'                       },
-    { name: 'git-version-clean'         , desc: 'returns MAJOR.MINOR.PATCH git version (suffix stripped)\n'                               },
-    { name: 'git-next-major'            , desc: 'returns what would be the next MAJOR semantic version'                                   },
-    { name: 'git-next-minor'            , desc: 'returns what would be the next MINOR semantic version'                                   },
-    { name: 'git-next-patch'            , desc: 'returns what would be the next PATCH semantic version'                                   },
-    { name: 'git-next-build'            , desc: 'returns what would be the next BUILD semantic version (less common)\n'                   },
+  { name: 'git-version'               , desc: 'returns the current git semantic version, based on [git describe]'                       },
+  { name: 'git-version-clean'         , desc: 'returns MAJOR.MINOR.PATCH git version (suffix stripped)\n'                               },
+  { name: 'git-next-major'            , desc: 'returns what would be the next MAJOR semantic version'                                   },
+  { name: 'git-next-minor'            , desc: 'returns what would be the next MINOR semantic version'                                   },
+  { name: 'git-next-patch'            , desc: 'returns what would be the next PATCH semantic version'                                   },
+  { name: 'git-next-build'            , desc: 'returns what would be the next BUILD semantic version (less common)\n'                   },
 
-    { name: 'get-svn-rev'               , desc: 'parses and returns the svn current revision from [svn info]'                             },
-    { name: 'get-svn-last-changed-rev'  , desc: 'parses and returns the svn last-changed revision from [svn info]\n'                      }
+  { name: 'get-svn-rev'               , desc: 'parses and returns the svn current revision from [svn info]'                             },
+  { name: 'get-svn-last-changed-rev'  , desc: 'parses and returns the svn last-changed revision from [svn info]\n'                      },
 
 ];
 
-for (var i = 0;i < cmds.length;i++) {
-    if (args[0] == cmds[i].name && cmds[i].name != 'list-commands') {
-        var steps = [{ name: cmds[i].name, folder: '.', cmd: cmds[i].name}];
-        rs.runsteps(steps);
-    }
+for ( var i = 0;i < cmds.length;i++ ) {
+  if ( args[ 0 ] == cmds[ i ].name && cmds[ i ].name != 'list-commands' ) {
+    var steps = [{ name: cmds[ i ].name, folder: '.', cmd: cmds[ i ].name }];
+    rs.runsteps( steps );
+  }
 }
 
 // Generate usage, including a full app description, as this will be dynamically used to create README.md.  All docs in one place!  Cool.
-if (args[0] != 'list-commands') {
-    console.log(
-        '# git-semver\n' +        
+if ( args[ 0 ] != 'list-commands' ) {
+  console.log(
+    '# git-semver\n' +        
         'Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.\n\n' +
 
         'The git-semver mantra:\n' +
@@ -84,31 +84,31 @@ if (args[0] != 'list-commands') {
         '\n' +
         'git-sync will drop you back to the command line on any conflicts.  Automating this workflow can save hours.\n' +
         '\n' +
-        'Common commands:\n'
-    );
+        'Common commands:\n',
+  );
 }
-for (var i = 0;i < cmds.length;i++) {
-    console.log('* '+rs.string_pad('                           ',cmds[i].name)+cmds[i].desc);
+for ( var i = 0;i < cmds.length;i++ ) {
+  console.log( '* '+rs.string_pad( '                           ',cmds[ i ].name )+cmds[ i ].desc );
 
-    // Stop after 'list-commands' if we are not listing all commands.
-    if (cmds[i].name == 'list-commands') 
-        if (args[0] != 'list-commands')
-            break
+  // Stop after 'list-commands' if we are not listing all commands.
+  if ( cmds[ i ].name == 'list-commands' ) 
+    if ( args[ 0 ] != 'list-commands' )
+      break
 }
 
-if (args[0] == 'list-commands') {
-    console.log(
-        '\n'+
+if ( args[ 0 ] == 'list-commands' ) {
+  console.log(
+    '\n'+
         'Utilities include:\n'+
         '\n'+
-        '* ' +rs.string_pad('                    ','version-control')  +'> git semantic versioning via tags; sync git repos (auto commit+pull+push); extract svn revisions\n'
-    );
+        '* ' +rs.string_pad( '                    ','version-control' )  +'> git semantic versioning via tags; sync git repos (auto commit+pull+push); extract svn revisions\n',
+  );
 }
 
 console.log(
-    '\n'+
-    'See https://bitpost.com/news for more bloviating.  Devs don\'t need no stinkin ops.   Happy automating!  :-)\n\n'
+  '\n'+
+    'See https://bitpost.com/news for more bloviating.  Devs don\'t need no stinkin ops.   Happy automating!  :-)\n\n',
 );
 
 // Getting the usage is important in scripts, don't error out.
-process.exit(0);
+process.exit( 0 );
