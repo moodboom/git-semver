@@ -11,7 +11,7 @@ const unknown_version = 'unknown version';
 
 
 //=========== git_version_valid: tests to see if a version is valid ============
-export const git_version_valid = function ( version ) {
+export const git_version_valid = version => {
 
   if ( version == null )
     return false;
@@ -25,7 +25,7 @@ export const git_version_valid = function ( version ) {
 
 
 // =========== git_version: gets the git version, using [git describe], which includes tag, commit count, and current hash prefix, as a string ============
-export const git_version = function () {
+export const git_version = () => {
 
   var desc = rs.run_command_sync( 'git describe --always --tags' ).trim();
 
@@ -49,7 +49,7 @@ export const git_version = function () {
 
 
 // =========== git_version_clean: gets the git version stripped to MAJOR.MINOR.PATCH ============
-export const git_version_clean = function () {
+export const git_version_clean = () => {
 
   var desc = git_version();
   if ( desc == unknown_version ) return desc;
@@ -63,7 +63,7 @@ export const git_version_clean = function () {
 
 
 //=========== git_changes: gets any changes in the current folder; returns blank if none ============
-export const git_changes = function ( folder ) {
+export const git_changes = folder => {
   // NOTE:  rebase pull will take care of recent commits that have not been pushed yet.
   var changes = rs.run_command_sync( `cd ${folder} && git status -uno --porcelain` );
   return changes;
@@ -71,7 +71,7 @@ export const git_changes = function ( folder ) {
 
 
 //=========== git_remote_changes: returns if remote changes exist, blank if none ============
-export const git_remote_changes = function ( folder ) {
+export const git_remote_changes = folder => {
   rs.run_command_quietly( `cd ${folder} && git remote update` );
   return rs.run_command_sync( `cd ${folder} && git log HEAD..HEAD@{u} --oneline` );
 }
@@ -80,14 +80,14 @@ export const git_remote_changes = function ( folder ) {
 // NOTE: These are used by git-sync to determine the "next" version.
 
 // =========== git_next_major ============
-export const next_major = function ( desc ) {
+export const next_major = desc => {
   var tokens = desc.match( /([0-9]*).*/ );
   var major = parseInt( tokens[ 1 ] ) + 1;
   if ( major == null ) return unknown_version;
 
   return major + ".0.0";
 }
-export const git_next_major = function () {
+export const git_next_major = () => {
   var desc = git_version();
   if ( desc == unknown_version ) return desc;
   return next_major( desc );
@@ -95,7 +95,7 @@ export const git_next_major = function () {
 
 
 // =========== git_next_minor ============
-export const next_minor = function ( desc ) {
+export const next_minor = desc => {
   var tokens = desc.match( /([0-9]*).([0-9]*)/ );
   var major = tokens[ 1 ];
   var minor = parseInt( tokens[ 2 ] ) + 1;
@@ -103,7 +103,7 @@ export const next_minor = function ( desc ) {
 
   return major + "." + minor + ".0";
 }
-export const git_next_minor = function () {
+export const git_next_minor = () => {
   var desc = git_version();
   if ( desc == unknown_version ) return desc;
   return next_minor( desc );
@@ -111,7 +111,7 @@ export const git_next_minor = function () {
 
 
 // =========== git_next_patch ============
-export const next_patch = function ( desc ) {
+export const next_patch = desc => {
   var tokens = desc.match( /([0-9]*).([0-9]*).([0-9]*)/ );
   var major = tokens[ 1 ];
   var minor = tokens[ 2 ];
@@ -120,7 +120,7 @@ export const next_patch = function ( desc ) {
 
   return major + "." + minor + "." + patch;
 }
-export const git_next_patch = function () {
+export const git_next_patch = () => {
 
   var desc = git_version();
   if ( desc == unknown_version ) return desc;
@@ -129,7 +129,7 @@ export const git_next_patch = function () {
 
 
 // =========== git_next_build (DEPRECATED in most use cases): gets the git version, then strips hash and increments the commit count by one ============
-export const next_build = function ( desc ) {
+export const next_build = desc => {
   // First we check to see if we are sitting right on a tag, eg [1.2.3].  If so, return [1.2.3-1].
   var tokens = desc.match( /(^[0-9]*.[0-9]*.[0-9]*$)/ );
   if ( tokens != null )
@@ -144,7 +144,7 @@ export const next_build = function ( desc ) {
   var build = parseInt( tokens[ 2 ] ) + 1;
   return tokens[ 1 ] + build;
 }
-export const git_next_build = function () {
+export const git_next_build = () => {
 
   var desc = git_version();
   if ( desc == unknown_version ) return desc;
@@ -177,8 +177,8 @@ export const git_next_build = function () {
 //
 // We will go with the fourth.
 //
-export const git_sync = function ( folder, tag_params, stamp_callback_function ) {
-  Array.prototype.plus = function ( other_array ) {
+export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
+  Array.prototype.plus = other_array => {
     other_array.forEach( function ( v ) { this.push( v ) }, this );
   }
 
@@ -271,7 +271,7 @@ export const git_sync = function ( folder, tag_params, stamp_callback_function )
         // Here's how you provide the function signature:
         //
         //      var tag_params = vc.parse_tag_parameters(process.argv);
-        //      var app_stamp_callback_function = function(err, version) {
+        //      var app_stamp_callback_function = (err, version) => {
         //          if (err) throw err; // Check for the error and throw if it exists.
         //          // STAMP VERSION INTO PRODUCT CODE as needed
         //      };
@@ -324,7 +324,7 @@ export const git_sync = function ( folder, tag_params, stamp_callback_function )
 
 
 // =========== git_clone: clones a repo ============
-export const git_clone = function ( remote_repo, local_folder, sync ) {
+export const git_clone = ( remote_repo, local_folder, sync ) => {
   // Make sure the task specifies the full target folder since these may be called async.
   // i.e., don't use process.cwd()...
   var cmd1 = 'git clone ' + remote_repo + ' ' + local_folder;
@@ -346,7 +346,7 @@ export const git_clone = function ( remote_repo, local_folder, sync ) {
 
 
 // =========== git_tag_list: list tags, including 1 line from the annotaged tag's commit message ============
-export const git_tag_list = function ( tag_params ) {
+export const git_tag_list = tag_params => {
 
   var head = 10
   if ( tag_params.comment != null && tag_params.comment.length )
@@ -361,7 +361,7 @@ export const git_tag_list = function ( tag_params ) {
 
 
 // =========== git_branchlog: show a concise branch merge history ============
-export const git_branchlog = function ( tag_params ) {
+export const git_branchlog = tag_params => {
 
   // branches, prettified; see here:
   //     https://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git
@@ -384,7 +384,7 @@ export const git_branchlog = function ( tag_params ) {
 
 
 // =========== git_log: concise pretty log ============
-export const git_log = function ( tag_params ) {
+export const git_log = tag_params => {
 
   // Getting terminal size is nasty, so use a package that works "often" but not always, sigh.
   const { width, height } = windowsize.default || { width: 120, height: 40 };
@@ -423,19 +423,19 @@ export const git_log = function ( tag_params ) {
 
 
 //=========== git_skip: tell git to start ignoring upstream and local changes to the given file ============
-export const git_skip = function ( file ) {
+export const git_skip = file => {
   rs.run_command_sync_to_console( "git update-index --skip-worktree " + file );
 }
 
 
 //=========== git_noskip: tell git to stop ignoring upstream and local changes to the given file ============
-export const git_noskip = function ( file ) {
+export const git_noskip = file => {
   rs.run_command_sync_to_console( "git update-index --no-skip-worktree " + file );
 }
 
 
 //=========== git_skiplist: list the files for which git is currently ignoring upstream and local changes ============
-export const git_skiplist = function () {
+export const git_skiplist = () => {
   try {
     rs.run_command_sync_to_console( "git ls-files -v . | grep ^S" );
   }
@@ -445,7 +445,7 @@ export const git_skiplist = function () {
 
 
 //=========== git_folder_from_url: extract top level folder name ============
-export const git_folder_from_url = function ( url ) {
+export const git_folder_from_url = url => {
 
   // Get project name out of this:
   // ssh://user@me.com:1000/subdirs/folder.git
@@ -459,7 +459,7 @@ export const git_folder_from_url = function ( url ) {
 
 
 // =========== parse_tag_parameters: utility commonly needed to parse tag-based command line parameters ============
-export const parse_tag_parameters = function ( argv, noslice ) {
+export const parse_tag_parameters = ( argv, noslice ) => {
 
   // Typical node argv sets include [#path#/node #path#/node_cmd param1 param2 ...]
   // By default, we slice off the first two, but some callers do that themselves.
@@ -513,7 +513,7 @@ export const parse_tag_parameters = function ( argv, noslice ) {
 
 
 // =========== npm_update_version ============
-export const npm_update_version = function ( version ) {
+export const npm_update_version = version => {
   var filename = 'package.json';
   try {
     console.log( 'Stamping version [' + version + '] into [' + filename + ']...' );
@@ -537,7 +537,7 @@ export const npm_update_version = function ( version ) {
 
 
 // =========== svn_last_changed_rev: gets the SVN "last changed rev" for the current folder, as a string ============
-export const svn_last_changed_rev = function () {
+export const svn_last_changed_rev = () => {
 
   var run = rs.run_command_sync;
 
@@ -553,7 +553,7 @@ export const svn_last_changed_rev = function () {
 
 
 // =========== svn_rev: gets the SVN current revision for the current repo, as a string ============
-export const svn_rev = function () {
+export const svn_rev = () => {
 
   var run = rs.run_command_sync;
 
@@ -569,7 +569,7 @@ export const svn_rev = function () {
 
 
 // ============ build_semantic_version: builds "next" historical semver, with validation using stored result ===============
-export const build_semantic_version = function ( major, minor, patch, build, lastVersionFolder ) {
+export const build_semantic_version = ( major, minor, patch, build, lastVersionFolder ) => {
 
   // var args = process.argv.slice( 2 );
 
