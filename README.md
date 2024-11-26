@@ -1,6 +1,7 @@
 # git-semver
 Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.
 
+Common usage:  git-sync [--major|--minor] msg msg "msg with these [-?&|] should be quoted"
 The git-semver mantra:
 
    Automatically tag your code with a semantic version every time you push
@@ -31,7 +32,8 @@ git-sync will drop you back to the command line on any conflicts.  Automating th
 
 Common commands:
 
-* git-sync                   [--major|--minor|--patch] [msg msg...] > stash, pull, pop, stamp, commit, tag, push
+* git-sync                   [--major|--minor|--patch] [msg msg...] > best-practice-merge-and-tag any repo in one step
+with this flow: stash, pull, pop, stamp, commit, tag, push
 * git-sync-notag             > a git-sync version to commit code without a tag; bad form perhaps, but up to you
 
 * git-log                    [--branch|-b name] [count] > an opinionated pretty colored git log, clipped to ~110 chars
@@ -43,7 +45,9 @@ Common commands:
 * git-skiplist               > list the files for which git is currently ignoring upstream and local changes
 
 * npm-update-version         [version] > inject the current version into package.json
-* git-semver-sync            [--major|--minor] [msg msg...] > dogfooding 101: use git-semver to publish git-semver
+
+* gsv sync                   [--major|--minor] [msg msg...] > dogfooding 101: use git-semver to publish git-semver
+* gsv update                 update the local install of git-semver
 
 * list-commands              lists all available commands
 
@@ -51,10 +55,12 @@ Common commands:
 See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin ops.   Happy automating!  :-)
 
 
-Most recent commits...
-  4dae181 2 months ago Allow for larger hashes in git-log                    HEAD -> mas.. Michael Behrns-Miller [cast]
-  59a7392 8 months ago dep crawl                                               tag: 0.0.32 Michael Behrns-Miller [abt..
-  2dd3df4 8 months ago Minor npm deps ripple                                   tag: 0.0.31 Michael Behrns-Miller [abt..
-  acf6986 8 months ago Do not chdir in git_remote_changes                      tag: 0.0.30 Michael Behrns-Miller [abt..
 
-Version 0.0.34
+
+Most recent commits...
+  ade7218 19 hours ago Bump to fix circular dep                              HEAD -> mas.. Michael Behrns-Miller [cob..
+  a3782db 20 hours ago Refactor for consistency ES6-ishness and module ref..               Michael Behrns-Miller [cob..
+  530f8a6 8 months ago Eslint flat file and formatting                         tag: 0.0.34 Michael Behrns-Miller [cast]
+  4dae181 10 months .. Allow for larger hashes in git-log                      tag: 0.0.33 Michael Behrns-Miller [cast]
+
+Version 1.0.0

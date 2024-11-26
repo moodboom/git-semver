@@ -1,6 +1,6 @@
 {
   "name": "@moodboom/git-semver",
-  "version": "0.0.37",
+  "version": "1.0.0",
   "description": "Easy semantic versioning of git repositories",
   "type": "module",
   "main": "index.js",
@@ -23,11 +23,10 @@
     "url": "https://gitlab.com/moodboom/git-semver/issues"
   },
   "dependencies": {
-    "rad-scripts": "^5.0.3",
+    "rad-scripts": "^5.0.4",
     "window-size": "^1.1.1"
   },
   "bin": {
-    "gsv": "gsv-cmd.js",
     "git-sync": "git-sync-cmd.js",
     "git-sync-notag": "git-sync-notag-cmd.js",
     "git-version": "git-version-cmd.js",
@@ -45,7 +44,7 @@
     "get-svn-rev": "get-svn-rev-cmd.js",
     "get-svn-last-changed-rev": "get-svn-last-changed-rev-cmd.js",
     "npm-update-version": "npm-update-version-cmd.js",
-    "git-semver-sync": "git-semver-sync-cmd.js"
+    "gsv": "gsv-cmd.js"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

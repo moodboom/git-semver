@@ -306,7 +306,7 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
   }
   catch ( err ) {
     // NOTE: this is VERY noisy...
-    // console.log(err);
+    console.log( err );
 
     // If blip is not set, we had an earlier error in just trying to connect to the repo.
     if ( blip == "" ) {
