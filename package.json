@@ -1,6 +1,6 @@
 {
   "name": "@moodboom/git-semver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy semantic versioning of git repositories",
   "type": "module",
   "main": "index.js",
@@ -29,6 +29,7 @@
   "bin": {
     "git-sync": "git-sync-cmd.js",
     "git-sync-notag": "git-sync-notag-cmd.js",
+    "get-npm-adjusted-version": "get-npm-adjusted-version-cmd.js",
     "git-version": "git-version-cmd.js",
     "git-version-clean": "git-version-clean-cmd.js",
     "git-log": "git-log-cmd.js",

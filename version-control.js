@@ -152,6 +152,44 @@ export const git_next_build = () => {
 }
 
 
+// =========== get_npm_adjusted_version ============
+export const get_npm_adjusted_version = version => {
+  // We are given a version that we are about to apply.
+  // Before we do so, for node modules, we will want to ensure
+  // that the new version is actually higher than any
+  // npm module version in package.json.
+  // Most of the time this isn't a problem, and we simply return the version we were given.
+  // But if there were versions that were manually published, we don't want to clash.
+
+  const filename = 'package.json';
+  try {
+    const packageFileString = fs.readFileSync( filename, 'utf8' );
+    const p = JSON.parse( packageFileString );
+    const packageVersion = p.version;
+
+    var packageTokens = packageVersion.match( /([0-9]*).([0-9]*).([0-9]*)/ );
+    var versionTokens = version.match( /([0-9]*).([0-9]*).([0-9]*)/ );
+    if (
+      parseInt( packageTokens[ 1 ] ) > parseInt( versionTokens[ 1 ] ) 
+      || (
+        parseInt( packageTokens[ 1 ] ) === parseInt( versionTokens[ 1 ] ) 
+        && parseInt( packageTokens[ 2 ] ) > parseInt( versionTokens[ 2 ] )
+      ) || (
+        parseInt( packageTokens[ 1 ] ) === parseInt( versionTokens[ 1 ] ) 
+        && parseInt( packageTokens[ 2 ] ) === parseInt( versionTokens[ 2 ] )
+        && parseInt( packageTokens[ 3 ] ) > parseInt( versionTokens[ 3 ] )
+      )
+    ) {
+      return `${packageTokens[ 1 ]}.${packageTokens[ 2 ]}.${parseInt( packageTokens[ 3 ] ) + 1}`;
+    }
+  }
+  catch ( err ) {
+    // Just carry on on any errors.
+  }
+  return version;
+}
+
+
 // =========== git_sync ============
 // NOTE: This follows the rad-scripts mantra of semver-tagging every push.
 //
@@ -280,7 +318,7 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
         if ( stamp_callback_function ) {
           // We don't want to throw an error, so we pass null for the error argument
           // See: http://stackoverflow.com/questions/19739755/nodejs-callbacks-simple-example
-          stamp_callback_function( null, version );
+          version = stamp_callback_function( null, version );
         }
 
         // Make sure your editor waits before returning if you want to be able to provide comments on the fly.

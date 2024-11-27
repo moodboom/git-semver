@@ -34,7 +34,8 @@ Common commands:
 
 * git-sync                   [--major|--minor|--patch] [msg msg...] > best-practice-merge-and-tag any repo in one step
 with this flow: stash, pull, pop, stamp, commit, tag, push
-* git-sync-notag             > a git-sync version to commit code without a tag; bad form perhaps, but up to you
+* git-sync-notag             a git-sync version to commit code without a tag; bad form perhaps, but up to you
+* get-npm-adjusted-version   this ensures stamped version is bumped beyond version in package.json
 
 * git-log                    [--branch|-b name] [count] > an opinionated pretty colored git log, clipped to ~110 chars
 * git-branchlog              [--branch|-b name OR -all|-a] [--with-commits|-c] > an opinionated branch summary log
@@ -58,9 +59,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  ade7218 19 hours ago Bump to fix circular dep                              HEAD -> mas.. Michael Behrns-Miller [cob..
-  a3782db 20 hours ago Refactor for consistency ES6-ishness and module ref..               Michael Behrns-Miller [cob..
+  1375638 15 hours ago Log git sync errors                                   HEAD -> mas.. Michael Behrns-Miller [cob..
+  ade7218 35 hours ago Bump to fix circular dep                                tag: 0.0.40 Michael Behrns-Miller [cob..
+  a3782db 35 hours ago Refactor for consistency ES6-ishness and module ref..               Michael Behrns-Miller [cob..
   530f8a6 8 months ago Eslint flat file and formatting                         tag: 0.0.34 Michael Behrns-Miller [cast]
-  4dae181 10 months .. Allow for larger hashes in git-log                      tag: 0.0.33 Michael Behrns-Miller [cast]
 
-Version 1.0.0
+Version undefined
