@@ -71,8 +71,13 @@ export const git_changes = folder => {
 
 
 //=========== git_remote_changes: returns if remote changes exist, blank if none ============
+// NOTE we exit on error.  Need to stop and let the user fix connectivity before we plow ahead.
 export const git_remote_changes = folder => {
-  rs.run_command_quietly( `cd ${folder} && git remote update` );
+  const updateOkay = rs.run_command_sync( `cd ${folder} && git remote update >/dev/null 2>&1 || echo fail` ).trim();
+  if ( updateOkay === 'fail' ) {
+    console.log( `[git remote update] failed, please check your git remote connectivity.` );
+    process.exit( 1 );
+  }
   return rs.run_command_sync( `cd ${folder} && git log HEAD..HEAD@{u} --oneline` );
 }
 
@@ -167,8 +172,13 @@ export const get_npm_adjusted_version = version => {
     const p = JSON.parse( packageFileString );
     const packageVersion = p.version;
 
-    var packageTokens = packageVersion.match( /([0-9]*).([0-9]*).([0-9]*)/ );
-    var versionTokens = version.match( /([0-9]*).([0-9]*).([0-9]*)/ );
+    var packageTokens = packageVersion.match( /([0-9]*).([0-9]*).([0-9]*).*/ );
+    var versionTokens = version.match( /([0-9]*).([0-9]*).([0-9]*).*/ );
+
+    // DEBUG
+    console.log( 'pt', packageTokens );
+    console.log( 'vt', versionTokens );
+
     if (
       parseInt( packageTokens[ 1 ] ) > parseInt( versionTokens[ 1 ] ) 
       || (
@@ -180,7 +190,10 @@ export const get_npm_adjusted_version = version => {
         && parseInt( packageTokens[ 3 ] ) > parseInt( versionTokens[ 3 ] )
       )
     ) {
-      return `${packageTokens[ 1 ]}.${packageTokens[ 2 ]}.${parseInt( packageTokens[ 3 ] ) + 1}`;
+      const adjustedVersion = `${packageTokens[ 1 ]}.${packageTokens[ 2 ]}.${parseInt( packageTokens[ 3 ] ) + 1}`;
+      console.log( `The npm package version [${packageVersion}] is greater than the next git tag (${version}).` );
+      console.log( `Target version has been incremented to ${adjustedVersion}.` );
+      return adjustedVersion;
     }
   }
   catch ( err ) {

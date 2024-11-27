@@ -59,9 +59,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  1375638 15 hours ago Log git sync errors                                   HEAD -> mas.. Michael Behrns-Miller [cob..
-  ade7218 35 hours ago Bump to fix circular dep                                tag: 0.0.40 Michael Behrns-Miller [cob..
-  a3782db 35 hours ago Refactor for consistency ES6-ishness and module ref..               Michael Behrns-Miller [cob..
-  530f8a6 8 months ago Eslint flat file and formatting                         tag: 0.0.34 Michael Behrns-Miller [cast]
+  92dc5a7  3 hours ago Add npm version check See get_npm_adjusted_version    HEAD -> mas.. Michael Behrns-Miller [cob..
+  1375638 18 hours ago Log git sync errors                                      tag: 1.0.0 Michael Behrns-Miller [cob..
+  ade7218   2 days ago Bump to fix circular dep                                tag: 0.0.40 Michael Behrns-Miller [cob..
+  a3782db   2 days ago Refactor for consistency ES6-ishness and module ref..               Michael Behrns-Miller [cob..
 
 Version undefined
