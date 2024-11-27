@@ -59,9 +59,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  92dc5a7  3 hours ago Add npm version check See get_npm_adjusted_version    HEAD -> mas.. Michael Behrns-Miller [cob..
-  1375638 18 hours ago Log git sync errors                                      tag: 1.0.0 Michael Behrns-Miller [cob..
+  8d650a8 56 minutes.. Debug get_npm_adjusted_version                        HEAD -> mas.. Michael Behrns-Miller [cob..
+  92dc5a7  4 hours ago Add npm version check See get_npm_adjusted_version                  Michael Behrns-Miller [cob..
+  1375638 19 hours ago Log git sync errors                                      tag: 1.0.0 Michael Behrns-Miller [cob..
   ade7218   2 days ago Bump to fix circular dep                                tag: 0.0.40 Michael Behrns-Miller [cob..
-  a3782db   2 days ago Refactor for consistency ES6-ishness and module ref..               Michael Behrns-Miller [cob..
 
 Version undefined

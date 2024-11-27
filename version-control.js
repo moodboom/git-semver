@@ -168,17 +168,12 @@ export const get_npm_adjusted_version = version => {
 
   const filename = 'package.json';
   try {
-    const packageFileString = fs.readFileSync( filename, 'utf8' );
+    const packageFileString = readFileSync( filename, 'utf8' );
     const p = JSON.parse( packageFileString );
     const packageVersion = p.version;
 
     var packageTokens = packageVersion.match( /([0-9]*).([0-9]*).([0-9]*).*/ );
     var versionTokens = version.match( /([0-9]*).([0-9]*).([0-9]*).*/ );
-
-    // DEBUG
-    console.log( 'pt', packageTokens );
-    console.log( 'vt', versionTokens );
-
     if (
       parseInt( packageTokens[ 1 ] ) > parseInt( versionTokens[ 1 ] ) 
       || (
@@ -187,7 +182,7 @@ export const get_npm_adjusted_version = version => {
       ) || (
         parseInt( packageTokens[ 1 ] ) === parseInt( versionTokens[ 1 ] ) 
         && parseInt( packageTokens[ 2 ] ) === parseInt( versionTokens[ 2 ] )
-        && parseInt( packageTokens[ 3 ] ) > parseInt( versionTokens[ 3 ] )
+        && parseInt( packageTokens[ 3 ] ) >= parseInt( versionTokens[ 3 ] )
       )
     ) {
       const adjustedVersion = `${packageTokens[ 1 ]}.${packageTokens[ 2 ]}.${parseInt( packageTokens[ 3 ] ) + 1}`;
@@ -197,7 +192,8 @@ export const get_npm_adjusted_version = version => {
     }
   }
   catch ( err ) {
-    // Just carry on on any errors.
+    console.log( `get_npm_adjusted_version error:\n${err}\n` );
+    process.exit( 1 );
   }
   return version;
 }
@@ -567,10 +563,14 @@ export const parse_tag_parameters = ( argv, noslice ) => {
 export const npm_update_version = version => {
   var filename = 'package.json';
   try {
-    console.log( 'Stamping version [' + version + '] into [' + filename + ']...' );
+    // We know we have an npm package.
+    // Ensure the version increment exceeds the last published npm package version.
+    const adjustedVersion = get_npm_adjusted_version( version );
+
+    console.log( 'Stamping version [' + adjustedVersion + '] into [' + filename + ']...' );
     var origversion = readFileSync( filename, 'utf-8' );
     //   "version": "1.3.0",  ==>    "version": "###version###",
-    var newversion = origversion.replace( /\"version\".*/, '\"version\": \"' + version + '\",' );
+    var newversion = origversion.replace( /\"version\".*/, '\"version\": \"' + adjustedVersion + '\",' );
     writeFileSync( filename, newversion, 'utf-8' );
     // console.log(filename + " was updated...");
 
