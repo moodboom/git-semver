@@ -1,6 +1,6 @@
 {
   "name": "@moodboom/git-semver",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "An automated git semantic versioning command line system to optimize any developer's git workflow.  Shave off hours of git tedium.",
   "type": "module",
   "main": "index.js",

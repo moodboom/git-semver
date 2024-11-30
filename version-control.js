@@ -30,7 +30,7 @@ export const git_version_valid = version => {
 // =========== git_version: gets the git version, using [git describe], which includes tag, commit count, and current hash prefix, as a string ============
 export const git_version = () => {
 
-  const desc = run_command_sync( 'git describe --always --tags' ).trim();
+  let desc = run_command_sync( 'git describe --always --tags' ).trim();
 
   if ( !git_version_valid( desc ) ) {
 
