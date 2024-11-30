@@ -63,9 +63,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  e127436   3 days ago Always adjust version beyond the last package.json .. HEAD -> mas.. Michael Behrns-Miller [cob..
+  6c3120f 46 minutes.. More ES6                                              HEAD -> mas.. Michael Behrns-Miller [cob..
+  e127436   3 days ago Always adjust version beyond the last package.json ..               Michael Behrns-Miller [cob..
   8d650a8   3 days ago Debug get_npm_adjusted_version                                      Michael Behrns-Miller [cob..
   92dc5a7   3 days ago Add npm version check See get_npm_adjusted_version                  Michael Behrns-Miller [cob..
-  1375638   4 days ago Log git sync errors                                      tag: 1.0.0 Michael Behrns-Miller [cob..
 
 Version 1.0.1

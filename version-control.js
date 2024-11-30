@@ -567,6 +567,8 @@ export const npm_update_version = version => {
     // It is also used here to update our new version in the package-lock.json file.
     console.log( 'Updating ALL dependencies...' );
     run_command_sync_to_console( "npm update" );
+
+    return adjustedVersion;
   }
   catch ( err ) {
     console.log( filename + ' could not be updated: ' + err );
