@@ -1,7 +1,9 @@
 # git-semver
-Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.
+An automated git semantic versioning command line system to optimize any developer's git workflow.  Shave off hours of git tedium.
 
-Common usage:  git-sync [--major|--minor] msg msg "msg with these [-?&|] should be quoted"
+* Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.* Includes support for automated semver publishing of node modules.* Also includes extended tooling for git, including pretty log output.
+
+Common usage:  git-sync [--major|--minor] My commit message
 The git-semver mantra:
 
    Automatically tag your code with a semantic version every time you push
@@ -29,6 +31,8 @@ git-sync is the primary command.  It automates version stamping through a rebase
   stash, pull --rebase, stash pop, determine "next" version, stamp, commit, tag, push, publish
 
 git-sync will drop you back to the command line on any conflicts.  Automating this workflow can save hours.
+
+NOTE you don't have to quote your commit message if it is standard text.  Messages with [-?&|'] etc. should be quoted.
 
 Common commands:
 
@@ -59,9 +63,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  8d650a8 56 minutes.. Debug get_npm_adjusted_version                        HEAD -> mas.. Michael Behrns-Miller [cob..
-  92dc5a7  4 hours ago Add npm version check See get_npm_adjusted_version                  Michael Behrns-Miller [cob..
-  1375638 19 hours ago Log git sync errors                                      tag: 1.0.0 Michael Behrns-Miller [cob..
-  ade7218   2 days ago Bump to fix circular dep                                tag: 0.0.40 Michael Behrns-Miller [cob..
+  e127436   3 days ago Always adjust version beyond the last package.json .. HEAD -> mas.. Michael Behrns-Miller [cob..
+  8d650a8   3 days ago Debug get_npm_adjusted_version                                      Michael Behrns-Miller [cob..
+  92dc5a7   3 days ago Add npm version check See get_npm_adjusted_version                  Michael Behrns-Miller [cob..
+  1375638   4 days ago Log git sync errors                                      tag: 1.0.0 Michael Behrns-Miller [cob..
 
-Version undefined
+Version 1.0.1
