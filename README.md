@@ -63,9 +63,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  8628602 4 minutes .. Fix version bump bug                                  HEAD -> mas.. Michael Behrns-Miller [cob..
-  7a442b3 6 minutes .. Fix version bump bug                                     tag: 1.0.6 Michael Behrns-Miller [cob..
-  6c3120f 53 minutes.. More ES6                                                            Michael Behrns-Miller [cob..
-  e127436   3 days ago Always adjust version beyond the last package.json ..               Michael Behrns-Miller [cob..
+  724ad0d   4 days ago Fix a const to let                                    HEAD -> mas.. Michael Behrns-Miller [cob..
+  8628602   4 days ago Fix version bump bug                                     tag: 5.0.1 Michael Behrns-Miller [cob..
+  7a442b3   4 days ago Fix version bump bug                                     tag: 1.0.6 Michael Behrns-Miller [cob..
+  6c3120f   4 days ago More ES6                                                            Michael Behrns-Miller [cob..
 
-Version 5.0.2
+Version 5.0.3
