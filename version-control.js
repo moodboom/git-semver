@@ -235,7 +235,7 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
 
     let changes = git_changes( folder );
 
-    const remote_changes = git_remote_changes( folder );
+    let remote_changes = git_remote_changes( folder );
     if ( changes ) {
       changes = ( changes.length > 0 );
     }
