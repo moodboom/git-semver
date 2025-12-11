@@ -6,6 +6,7 @@ An automated git semantic versioning command line system to optimize any develop
 * Also includes extended tooling for git, including pretty log output.
 
 Common usage:  git-sync [--major|--minor] My commit message
+
 The git-semver mantra:
 
    Automatically tag your code with a semantic version every time you push
@@ -65,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-  5fefffa 71 seconds.. README update                                         HEAD -> mai.. Michael Behrns-Miller [cast]
+  2bbe235  6 hours ago README updated                                        HEAD -> mai.. Michael Behrns-Miller [cast]
+  5fefffa  6 hours ago README update                                            tag: 5.0.6 Michael Behrns-Miller [cast]
   6cf8386   5 days ago Node package update                                      tag: 5.0.5 Michael Behrns-Miller [cast]
   9b6438d   1 year ago Fix const to let                                         tag: 5.0.4 Michael Behrns-Miller [cob..
-  9ef5dd7   1 year ago Update eslint dev dep                                    tag: 5.0.3 Michael Behrns-Miller [cob..
 
-Version 5.0.7
+Version 5.0.8

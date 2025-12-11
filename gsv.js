@@ -130,7 +130,7 @@ export const gsv = ( target, args ) => {
             '* Also includes extended tooling for git, including pretty log output.\n\n' +
     
             'Common usage:' +
-            '  git-sync [--major|--minor] My commit message\n' +
+            '  git-sync [--major|--minor] My commit message\n\n' +
         
             'The git-semver mantra:\n' +
             '\n' +
