@@ -63,9 +63,9 @@ See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin op
 
 
 Most recent commits...
-  9b6438d 12 months .. Fix const to let                                      HEAD -> mai.. Michael Behrns-Miller [cob..
+  6cf8386   5 days ago Node package update                                   HEAD -> mai.. Michael Behrns-Miller [cast]
+  9b6438d   1 year ago Fix const to let                                         tag: 5.0.4 Michael Behrns-Miller [cob..
   9ef5dd7   1 year ago Update eslint dev dep                                    tag: 5.0.3 Michael Behrns-Miller [cob..
   724ad0d   1 year ago Fix a const to let                                       tag: 5.0.2 Michael Behrns-Miller [cob..
-  8628602   1 year ago Fix version bump bug                                     tag: 5.0.1 Michael Behrns-Miller [cob..
 
-Version 5.0.5
+Version 5.0.6
