@@ -125,8 +125,8 @@ export const gsv = ( target, args ) => {
         '# git-semver\n' +
             `An automated git semantic versioning command line system to optimize any developer's git workflow.  Shave off hours of git tedium.\n\n` +
 
-            '* Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.' +
-            '* Includes support for automated semver publishing of node modules.' +
+            '* Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.\n' +
+            '* Includes support for automated semver publishing of node modules.\n' +
             '* Also includes extended tooling for git, including pretty log output.\n\n' +
     
             'Common usage:' +
@@ -185,7 +185,7 @@ export const gsv = ( target, args ) => {
     
     console.log(
       '\n'+
-        'See https://bitpost.com/news for more bloviating.  Devs don\'t need no stinkin ops.   Happy automating!  :-)\n\n',
+        'See https://bitpost.com/news for more bloviating.  Happy automating!  :-)\n\n',
     );
   }
 }

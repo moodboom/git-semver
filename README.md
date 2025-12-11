@@ -1,7 +1,9 @@
 # git-semver
 An automated git semantic versioning command line system to optimize any developer's git workflow.  Shave off hours of git tedium.
 
-* Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.* Includes support for automated semver publishing of node modules.* Also includes extended tooling for git, including pretty log output.
+* Easily add semantic versioning to all your git repositories, and integrate the versioning into your apps.
+* Includes support for automated semver publishing of node modules.
+* Also includes extended tooling for git, including pretty log output.
 
 Common usage:  git-sync [--major|--minor] My commit message
 The git-semver mantra:
@@ -57,15 +59,15 @@ with this flow: stash, pull, pop, stamp, commit, tag, push
 * list-commands              lists all available commands
 
 
-See https://bitpost.com/news for more bloviating.  Devs don't need no stinkin ops.   Happy automating!  :-)
+See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 
 
 Most recent commits...
-  6cf8386   5 days ago Node package update                                   HEAD -> mai.. Michael Behrns-Miller [cast]
+  5fefffa 71 seconds.. README update                                         HEAD -> mai.. Michael Behrns-Miller [cast]
+  6cf8386   5 days ago Node package update                                      tag: 5.0.5 Michael Behrns-Miller [cast]
   9b6438d   1 year ago Fix const to let                                         tag: 5.0.4 Michael Behrns-Miller [cob..
   9ef5dd7   1 year ago Update eslint dev dep                                    tag: 5.0.3 Michael Behrns-Miller [cob..
-  724ad0d   1 year ago Fix a const to let                                       tag: 5.0.2 Michael Behrns-Miller [cob..
 
-Version 5.0.6
+Version 5.0.7
