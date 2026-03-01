@@ -1,4 +1,4 @@
-#!/usr/bin/env nodeold
+#!/usr/bin/env node
 
 import { normalize } from 'path';
 import { exec, execSync } from 'child_process';
@@ -57,7 +57,7 @@ export const git_version_clean = () => {
   const desc = git_version();
   if ( desc == unknown_version ) return desc;
 
-  const tokens = desc.match( /(^[0-9]*.[0-9]*.[0-9]*)/ );
+  const tokens = desc.match( /(^[0-9]*\.[0-9]*\.[0-9]*)/ );
   if ( tokens != null )
     return tokens[ 1 ];
 
@@ -89,7 +89,8 @@ export const git_remote_changes = folder => {
 
 // =========== git_next_major ============
 export const next_major = desc => {
-  const tokens = desc.match( /([0-9]*).*/ );
+  const tokens = desc.match( /([0-9]*)\..*/ );
+  if ( tokens == null ) return unknown_version;
   const major = parseInt( tokens[ 1 ] ) + 1;
   if ( major == null ) return unknown_version;
 
@@ -104,7 +105,8 @@ export const git_next_major = () => {
 
 // =========== git_next_minor ============
 export const next_minor = desc => {
-  const tokens = desc.match( /([0-9]*).([0-9]*)/ );
+  const tokens = desc.match( /([0-9]*)\.([0-9]*)/ );
+  if ( tokens == null ) return unknown_version;
   const major = tokens[ 1 ];
   const minor = parseInt( tokens[ 2 ] ) + 1;
   if ( major == null || minor == null ) return unknown_version;
@@ -120,7 +122,8 @@ export const git_next_minor = () => {
 
 // =========== git_next_patch ============
 export const next_patch = desc => {
-  const tokens = desc.match( /([0-9]*).([0-9]*).([0-9]*)/ );
+  const tokens = desc.match( /([0-9]*)\.([0-9]*)\.([0-9]*)/ );
+  if ( tokens == null ) return unknown_version;
   const major = tokens[ 1 ];
   const minor = tokens[ 2 ];
   const patch = parseInt( tokens[ 3 ] ) + 1;
@@ -139,18 +142,18 @@ export const git_next_patch = () => {
 // =========== git_next_build (DEPRECATED in most use cases): gets the git version, then strips hash and increments the commit count by one ============
 export const next_build = desc => {
   // First we check to see if we are sitting right on a tag, eg [1.2.3].  If so, return [1.2.3-1].
-  let tokens = desc.match( /(^[0-9]*.[0-9]*.[0-9]*$)/ );
+  let tokens = desc.match( /(^[0-9]*\.[0-9]*\.[0-9]*$)/ );
   if ( tokens != null )
     return tokens[ 1 ] + "-1";
 
-  tokens = desc.match( /(^[0-9]*.[0-9]*.[0-9]*)(.[0-9]*).*/ );
+  tokens = desc.match( /(^[0-9]*\.[0-9]*\.[0-9]*)-([0-9]+)/ );
 
   if ( tokens == null || tokens[ 2 ] == null )
     return unknown_version;
 
   // Now turn [1.2.3-4-g#######] into [1.2.3-5]...
   const build = parseInt( tokens[ 2 ] ) + 1;
-  return tokens[ 1 ] + build;
+  return tokens[ 1 ] + "-" + build;
 }
 export const git_next_build = () => {
 
@@ -175,8 +178,8 @@ export const get_npm_adjusted_version = version => {
     const p = JSON.parse( packageFileString );
     const packageVersion = p.version;
 
-    const packageTokens = packageVersion.match( /([0-9]*).([0-9]*).([0-9]*).*/ );
-    const versionTokens = version.match( /([0-9]*).([0-9]*).([0-9]*).*/ );
+    const packageTokens = packageVersion.match( /([0-9]*)\.([0-9]*)\.([0-9]*).*/ );
+    const versionTokens = version.match( /([0-9]*)\.([0-9]*)\.([0-9]*).*/ );
     if (
       parseInt( packageTokens[ 1 ] ) > parseInt( versionTokens[ 1 ] ) 
       || (
@@ -364,7 +367,7 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
 export const git_clone = ( remote_repo, local_folder, sync ) => {
   // Make sure the task specifies the full target folder since these may be called async.
   // i.e., don't use process.cwd()...
-  const cmd1 = 'git clone ' + remote_repo + ' ' + local_folder;
+  const cmd1 = `git clone "${remote_repo}" "${local_folder}"`;
 
   const e = sync ? execSync : exec;
   e( cmd1, function ( error, stdout, stderr ) {
@@ -461,13 +464,13 @@ export const git_log = tag_params => {
 
 //=========== git_skip: tell git to start ignoring upstream and local changes to the given file ============
 export const git_skip = file => {
-  run_command_sync_to_console( "git update-index --skip-worktree " + file );
+  run_command_sync_to_console( `git update-index --skip-worktree "${file}"` );
 }
 
 
 //=========== git_noskip: tell git to stop ignoring upstream and local changes to the given file ============
 export const git_noskip = file => {
-  run_command_sync_to_console( "git update-index --no-skip-worktree " + file );
+  run_command_sync_to_console( `git update-index --no-skip-worktree "${file}"` );
 }
 
 
