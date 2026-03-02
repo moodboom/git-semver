@@ -23,6 +23,10 @@ Public npm library: automated git semantic versioning CLI system.
 - `rad-scripts` — shell execution, filesystem ops (circular dependency, works via npm deduplication)
 - `window-size` — terminal width detection for `git_log` column formatting
 
+## Git Workflow
+- Always commit and push with: `mh s <commit message>` (also publishes npm modules)
+- On commit: compress context, update CLAUDE.md with completed changes, then run `mh s <message>` to commit and push
+
 ## Publishing
 - Published to npm as `@moodboom/git-semver`
 - `mh s <comment>` commits, tags, pushes, and publishes in one step

@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-  6105794 16 minutes.. Vet fixes: fix ping command injection and return va.. HEAD -> mai..                   MDM [cast]
+  2d0b881 19 hours ago Complete verification and improvement by Claude Cod.. HEAD -> mai..                   MDM [cast]
+  6105794 19 hours ago Vet fixes: fix ping command injection and return va..    tag: 5.0.9                   MDM [cast]
   894dea3 3 months ago README updated                                           tag: 5.0.8 Michael Behrns-Miller [cast]
   2bbe235 3 months ago README updated                                           tag: 5.0.7 Michael Behrns-Miller [cast]
-  5fefffa 3 months ago README update                                            tag: 5.0.6 Michael Behrns-Miller [cast]
 
-Version 5.0.10
+Version 5.0.11
