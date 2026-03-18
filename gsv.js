@@ -69,6 +69,16 @@ export const gsv = ( target, args ) => {
     git_sync( process.cwd(), tagParams, stampCallbackFunction );
     if ( changes || tagParams.force ) {
       // There were changes (or --force was used to stamp a clean tree), so publish now.
+      // NOTE: npm auth uses a granular access token scoped to @moodboom/*.
+      // Token created 2026-03-18, expires 2026-06-16 (90 days).
+      // If publish fails with E401/E404, generate a new token at:
+      //   https://www.npmjs.com/settings/moodboom/tokens
+      // Then: npm config set //registry.npmjs.org/:_authToken <new-token>
+      const NPM_TOKEN_EXPIRES = new Date( '2026-06-16' );
+      const daysLeft = Math.floor(( NPM_TOKEN_EXPIRES - Date.now() ) / 86400000 );
+      if ( daysLeft <= 14 ) {
+        console.log( `\n⚠  npm publish token expires in ${daysLeft} day(s)! Regenerate at https://www.npmjs.com/settings/moodboom/tokens\n` );
+      }
       run_command_sync_to_console( 'npm publish --access public' );
     }
     
