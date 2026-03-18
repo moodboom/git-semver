@@ -249,7 +249,8 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
     const any_changes = changes || remote_changes;
 
     // Currently we bail out before printing "---" blip, as it's fairly chatty.
-    if ( !any_changes ) {
+    // --force skips this bailout so stamp callbacks can create changes to commit.
+    if ( !any_changes && !tag_params.force ) {
       // There may be more to do after we return, doh!
       // process.exit(0);
 
@@ -258,7 +259,7 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
 
     // Build blip.
     if ( changes && remote_changes && !tag_params.pull_only ) { blip = '<=>'; }
-    else if ( changes && !tag_params.pull_only ) { blip = '>>>'; }
+    else if ( ( changes || tag_params.force ) && !tag_params.pull_only ) { blip = '>>>'; }
     else if ( remote_changes ) { blip = '<<<'; }
     else { blip = '---'; }
 
@@ -294,7 +295,7 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
     if ( tag_params.pull_only )
       return 0;
 
-    if ( changes ) {
+    if ( changes || tag_params.force ) {
       if ( tag_params.notag ) {
 
         // Just commit, no tag work at all.
@@ -512,6 +513,7 @@ export const parse_tag_parameters = ( argv, noslice ) => {
   let major = 0;
   let minor = 0;
   let pull_only = 0;
+  let force = 0;
   let with_commits = 0;
   let all = 0;
   let branch = "";
@@ -521,13 +523,16 @@ export const parse_tag_parameters = ( argv, noslice ) => {
   else if ( args[ 0 ] == '--minor' || args[ 0 ] == '-n' ) { minor = 1; args = args.slice( 1 ); }
   else if ( args[ 0 ] == '--pull-only' || args[ 0 ] == '-p' ) { pull_only = 1; args = args.slice( 1 ); }
 
+  if ( args[ 0 ] == '--force' || args[ 0 ] == '-f' ) { force = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--branch' || args[ 0 ] == '-b' ) { branch = args[ 1 ]; args = args.slice( 2 ); }
   if ( args[ 0 ] == '--with-commits' || args[ 0 ] == '-c' ) { with_commits = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--all' || args[ 0 ] == '-a' ) { all = 1; args = args.slice( 1 ); }
   // Do it again to handle more slot ordering.  Hackery.
+  if ( args[ 0 ] == '--force' || args[ 0 ] == '-f' ) { force = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--branch' || args[ 0 ] == '-b' ) { branch = args[ 1 ]; args = args.slice( 2 ); }
   if ( args[ 0 ] == '--with-commits' || args[ 0 ] == '-c' ) { with_commits = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--all' || args[ 0 ] == '-a' ) { all = 1; args = args.slice( 1 ); }
+  if ( args[ 0 ] == '--force' || args[ 0 ] == '-f' ) { force = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--branch' || args[ 0 ] == '-b' ) { branch = args[ 1 ]; args = args.slice( 2 ); }
   if ( args[ 0 ] == '--with-commits' || args[ 0 ] == '-c' ) { with_commits = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--all' || args[ 0 ] == '-a' ) { all = 1; args = args.slice( 1 ); }
@@ -542,6 +547,7 @@ export const parse_tag_parameters = ( argv, noslice ) => {
     "major": major,
     "minor": minor,
     "pull_only": pull_only,
+    "force": force,
     "comment": comment,
     "branch": branch,
     "with_commits": with_commits,
