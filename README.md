@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-  9248e88  2 weeks ago Claude context                                        HEAD -> mai..                   MDM [cast]
+  5b546ef 86 minutes.. Add --force flag to git-sync so version stamps work.. HEAD -> mai..                   MDM [cast]
+  9248e88  2 weeks ago Claude context                                          tag: 5.0.11                   MDM [cast]
   2d0b881  2 weeks ago Complete verification and improvement by Claude Cod..   tag: 5.0.10                   MDM [cast]
   6105794  2 weeks ago Vet fixes: fix ping command injection and return va..    tag: 5.0.9                   MDM [cast]
-  894dea3 3 months ago README updated                                           tag: 5.0.8 Michael Behrns-Miller [cast]
 
-Version 5.0.12
+Version 5.0.13

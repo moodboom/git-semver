@@ -67,8 +67,8 @@ export const gsv = ( target, args ) => {
     // SYNC and PUBLISH CHANGES
     const changes = git_changes( process.cwd() );
     git_sync( process.cwd(), tagParams, stampCallbackFunction );
-    if ( changes ) {
-      // There were changes, so let's publish now.
+    if ( changes || tagParams.force ) {
+      // There were changes (or --force was used to stamp a clean tree), so publish now.
       run_command_sync_to_console( 'npm publish --access public' );
     }
     
