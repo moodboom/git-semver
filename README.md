@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-  400a3ae 15 minutes.. Fix gsv sync to publish on --force                    HEAD -> mai..                   MDM [cast]
-  5b546ef  2 hours ago Add --force flag to git-sync so version stamps work..   tag: 5.0.12                   MDM [cast]
-  9248e88  2 weeks ago Claude context                                          tag: 5.0.11                   MDM [cast]
-  2d0b881  2 weeks ago Complete verification and improvement by Claude Cod..   tag: 5.0.10                   MDM [cast]
+  2f2fd72   5 days ago Add npm token expiry warning to gsv sync publish      HEAD -> mai..                   MDM [cast]
+  400a3ae   5 days ago Fix gsv sync to publish on --force                      tag: 5.0.13                   MDM [cast]
+  5b546ef   5 days ago Add --force flag to git-sync so version stamps work..   tag: 5.0.12                   MDM [cast]
+  9248e88  3 weeks ago Claude context                                          tag: 5.0.11                   MDM [cast]
 
-Version 5.0.14
+Version 5.0.15

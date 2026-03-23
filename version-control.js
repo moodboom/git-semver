@@ -321,7 +321,11 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
         if ( stamp_callback_function ) {
           // We don't want to throw an error, so we pass null for the error argument
           // See: http://stackoverflow.com/questions/19739755/nodejs-callbacks-simple-example
-          version = stamp_callback_function( null, version );
+          const cbResult = stamp_callback_function( null, version );
+          // Guard: if callback forgot to return version, don't clobber it with undefined.
+          if ( cbResult !== undefined ) {
+            version = cbResult;
+          }
         }
 
         // Make sure your editor waits before returning if you want to be able to provide comments on the fly.
