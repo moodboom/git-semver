@@ -390,18 +390,25 @@ export const git_clone = ( remote_repo, local_folder, sync ) => {
 }
 
 
-// =========== git_tag_list: list tags, including 1 line from the annotaged tag's commit message ============
+// =========== git_tag_list: list tags with message, user and timestamp (matching git_log style) ============
 export const git_tag_list = tag_params => {
 
+  const { width, height } = windowsize.default || { width: 120, height: 40 };
+  const cols = width - 2;
   let head = 10;
   if ( tag_params.comment != null && tag_params.comment.length )
     head = tag_params.comment
 
-  // get tags, then sort output numerically
-  run_command_sync_to_console( "git tag -n|sort -V -r|head -" + head );
-
-  // OLD way, output does not pipe properly if we don't sync_to_console
-  // return run_command_sync("git tag -n | sort -n | tail "+message);  <-- doesn't pipe
+  run_command_sync_to_console(
+    `git for-each-ref --sort=-version:refname refs/tags/ `
+    + `--format="%(refname:short)\t%(creatordate:relative)\t%(subject)\t%(if)%(taggername)%(then)%(taggername)%(else)%(authorname)%(end)" `
+    + `| head -${head} `
+    + `| awk -F'\\t' -v cols=${cols} '`
+    + `{ t[NR]=$1; d[NR]=$2; s[NR]=$3; w[NR]=$4; `
+    + `if(length($1)>mt) mt=length($1); if(length($2)>md) md=length($2); if(length($4)>mw) mw=length($4); n=NR } `
+    + `END { co=cols-mt-md-mw-3; if(co<1) co=1; `
+    + `for(i=1;i<=n;i++) printf "%-*s \\033[34m%*s\\033[0m %-*.*s \\033[37m%*s\\033[0m\\n", mt, t[i], md, d[i], co, co, s[i], mw, w[i] }'`
+  );
 }
 
 
@@ -442,27 +449,16 @@ export const git_log = tag_params => {
   if ( tag_params.branch != null && tag_params.branch.length )
     branch = tag_params.branch
 
-  const hash = 9; // was 7; minimum hash gets bigger with more commits
-  let time, tag, who, comm;
-  if ( cols < 70 ) {
-    time = tag = who = 6;
-    comm = cols - hash - time - tag - who - 3;
-    if ( comm < 1 ) {
-      console.log( `Can't fit` );
-      exit( 1 );
-    }
-  } else {
-    time = 12;
-    tag = 13;
-    who = 28;
-    comm = cols - hash - time - tag - who - 3;
-  }
   // get log, prettified; see here:
   //     http://stackoverflow.com/questions/1441010/the-shortest-possible-output-from-git-log-containing-author-and-date
   run_command_sync_to_console(
-    `git log ${branch} `
-    + `--pretty="%>(${hash},trunc)%h %C(auto,blue)%>(${time},trunc)%ad %C(auto,reset)%<(${comm},trunc)%s %C(auto,red)%>(${tag},trunc)%D %C(auto,white)%>(${who},trunc)%an" `
-    + `--date=relative -${head}`,
+    `git log ${branch} --format="%h%x09%ad%x09%s%x09%D%x09%an" --date=relative -${head} `
+    + `| awk -F'\\t' -v cols=${cols} '`
+    + `{ h[NR]=$1; t[NR]=$2; s[NR]=$3; w[NR]=$5; `
+    + `dp=""; split($4,dc,", "); for(j in dc) if(dc[j]~/^tag: /) { if(dp!="") dp=dp", "; dp=dp substr(dc[j],6) }; d[NR]=dp; `
+    + `if(length($1)>mh) mh=length($1); if(length($2)>mt) mt=length($2); if(length(dp)>md) md=length(dp); if(length($5)>mw) mw=length($5); n=NR } `
+    + `END { co=cols-mh-mt-mw-3-(md>0?md+1:0); if(co<1) co=1; `
+    + `for(i=1;i<=n;i++) printf "%*s \\033[34m%*s\\033[0m %-*.*s%s \\033[37m%*s\\033[0m\\n", mh, h[i], mt, t[i], co, co, s[i], (md>0?sprintf(" \\033[31m%*s\\033[0m",md,d[i]):""), mw, w[i] }'`
   );
 }
 

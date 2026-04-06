@@ -16,12 +16,12 @@ Public npm library: automated git semantic versioning CLI system.
 - `npm_update_version(version)` — stamp version into package.json
 - `parse_tag_parameters(argv)` — parse CLI flags (--major, --minor, --pull-only, --branch, etc.)
 - `git_skip/noskip/skiplist` — manage skip-worktree files
-- `git_log`, `git_branchlog`, `git_tag_list` — pretty git output
+- `git_log`, `git_branchlog`, `git_tag_list` — pretty columnar git output (auto-sized columns via awk, tag-only decorations)
 - `git_clone`, `git_changes`, `git_remote_changes` — git utilities
 
 ## Dependencies
 - `rad-scripts` — shell execution, filesystem ops (circular dependency, works via npm deduplication)
-- `window-size` — terminal width detection for `git_log` column formatting
+- `window-size` — terminal width detection for `git_log`/`git_tag_list` column formatting
 
 ## Git Workflow
 - Always commit and push with: `mh s <commit message>` (also publishes npm modules)
