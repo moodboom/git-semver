@@ -24,12 +24,12 @@ Public npm library: automated git semantic versioning CLI system.
 - `window-size` — terminal width detection for `git_log`/`git_tag_list` column formatting
 
 ## Git Workflow
-- Always commit and push with: `mh s <commit message>` (also publishes npm modules)
-- On commit: compress context, update CLAUDE.md with completed changes, then run `mh s <message>` to commit and push
+- Always commit and push with: `mh sp <commit message>` (sync-project — scoped to this repo; runs `gsv sync`, which also publishes the npm module). `mh s` is the optional all-repos sweep.
+- On commit: compress context, update CLAUDE.md with completed changes, then run `mh sp <message>` to commit and push
 
 ## Publishing
 - Published to npm as `@moodboom/git-semver`
-- `mh s <comment>` commits, tags, pushes, and publishes in one step
+- `mh sp <comment>` (here) commits, tags, pushes, and publishes in one step; `mh s` does the same as part of an all-repos sweep
 - `files` field in package.json controls what gets published
 - `package-lock.json` is gitignored (library, not app)
 

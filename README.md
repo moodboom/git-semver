@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-9c2cd18 [34m2 weeks ago[0m Fix undefined git tag: scripts stamp callback missing return, add guard in git-s [31m5.0.15[0m [37mMDM [cast][0m
-2f2fd72 [34m3 weeks ago[0m Add npm token expiry warning to gsv sync publish                                 [31m5.0.14[0m [37mMDM [cast][0m
-400a3ae [34m3 weeks ago[0m Fix gsv sync to publish on --force                                               [31m5.0.13[0m [37mMDM [cast][0m
-5b546ef [34m3 weeks ago[0m Add --force flag to git-sync so version stamps work on clean working trees       [31m5.0.12[0m [37mMDM [cast][0m
+a29de1d [34m10 weeks ago[0m Autofit columns of git-log and git-tag-list                                     [31m 5.1.0[0m [37mMDM [cast][0m
+9c2cd18 [34m3 months ago[0m Fix undefined git tag: scripts stamp callback missing return, add guard in git- [31m5.0.15[0m [37mMDM [cast][0m
+2f2fd72 [34m3 months ago[0m Add npm token expiry warning to gsv sync publish                                [31m5.0.14[0m [37mMDM [cast][0m
+400a3ae [34m3 months ago[0m Fix gsv sync to publish on --force                                              [31m5.0.13[0m [37mMDM [cast][0m
 
-Version 5.1.0
+Version 5.1.1
