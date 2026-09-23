@@ -522,6 +522,10 @@ export const parse_tag_parameters = ( argv, noslice ) => {
   if ( args[ 0 ] == '--major' || args[ 0 ] == '-j' ) { major = 1; args = args.slice( 1 ); }
   else if ( args[ 0 ] == '--minor' || args[ 0 ] == '-n' ) { minor = 1; args = args.slice( 1 ); }
   else if ( args[ 0 ] == '--pull-only' || args[ 0 ] == '-p' ) { pull_only = 1; args = args.slice( 1 ); }
+  // --patch is the documented default bump (`at ds --patch --force msg`); it must
+  // be consumed here or it shadows --force and the sync silently no-ops on a
+  // clean tree (2026-09-23).
+  else if ( args[ 0 ] == '--patch' ) { args = args.slice( 1 ); }
 
   if ( args[ 0 ] == '--force' || args[ 0 ] == '-f' ) { force = 1; args = args.slice( 1 ); }
   if ( args[ 0 ] == '--branch' || args[ 0 ] == '-b' ) { branch = args[ 1 ]; args = args.slice( 2 ); }
