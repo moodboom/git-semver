@@ -246,7 +246,11 @@ export const git_sync = ( folder, tag_params, stamp_callback_function ) => {
       remote_changes = ( remote_changes.length > 0 );
     }
 
-    const any_changes = changes || remote_changes;
+    // Unpushed local commits (e.g. a previous sync committed but its push was cut
+    // short) must not trip the "nothing to do" bailout, or they are never pushed.
+    const local_ahead = run_command_sync( `cd ${folder} && git log HEAD@{u}..HEAD --oneline 2>/dev/null` ).trim().length > 0;
+
+    const any_changes = changes || remote_changes || local_ahead;
 
     // Currently we bail out before printing "---" blip, as it's fairly chatty.
     // --force skips this bailout so stamp callbacks can create changes to commit.

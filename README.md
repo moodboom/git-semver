@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-a29de1d [34m10 weeks ago[0m Autofit columns of git-log and git-tag-list                                     [31m 5.1.0[0m [37mMDM [cast][0m
-9c2cd18 [34m3 months ago[0m Fix undefined git tag: scripts stamp callback missing return, add guard in git- [31m5.0.15[0m [37mMDM [cast][0m
-2f2fd72 [34m3 months ago[0m Add npm token expiry warning to gsv sync publish                                [31m5.0.14[0m [37mMDM [cast][0m
-400a3ae [34m3 months ago[0m Fix gsv sync to publish on --force                                              [31m5.0.13[0m [37mMDM [cast][0m
+4fa0e50 [34m 4 weeks ago[0m parse_tag_parameters: accept --patch as a no-op bump select [31m     [0m [37mMichael Behrns-Miller [abtdev1][0m
+8713f23 [34m 5 weeks ago[0m AGENTS.md: instruction file for the OpenCode harness (open- [31m     [0m [37m   Michael Behrns-Miller [glam][0m
+53ca1a5 [34m4 months ago[0m docs - default commit recipe to mh sp scoped, mh s reframed [31m5.1.1[0m [37m                     MDM [cast][0m
+a29de1d [34m7 months ago[0m Autofit columns of git-log and git-tag-list                 [31m5.1.0[0m [37m                     MDM [cast][0m
 
-Version 5.1.1
+Version 5.1.2
