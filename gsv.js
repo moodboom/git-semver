@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { writeFileSync } from 'fs';
+import { writeFileSync, readFileSync } from 'fs';
 
 import { 
   run_command_sync_to_console, 
@@ -69,17 +69,37 @@ export const gsv = ( target, args ) => {
     git_sync( process.cwd(), tagParams, stampCallbackFunction );
     if ( changes || tagParams.force ) {
       // There were changes (or --force was used to stamp a clean tree), so publish now.
-      // NOTE: npm auth uses a granular access token scoped to @moodboom/*.
-      // Token created 2026-03-18, expires 2026-06-16 (90 days).
-      // If publish fails with E401/E404, generate a new token at:
-      //   https://www.npmjs.com/settings/moodboom/tokens
-      // Then: npm config set //registry.npmjs.org/:_authToken <new-token>
-      const NPM_TOKEN_EXPIRES = new Date( '2026-06-16' );
-      const daysLeft = Math.floor(( NPM_TOKEN_EXPIRES - Date.now() ) / 86400000 );
-      if ( daysLeft <= 14 ) {
-        console.log( `\n⚠  npm publish token expires in ${daysLeft} day(s)! Regenerate at https://www.npmjs.com/settings/moodboom/tokens\n` );
+      // npm auth: a granular access token scoped to @moodboom/*, set with
+      //   npm config set //registry.npmjs.org/:_authToken <token>
+      // Per npm's 2026-07-08 changelog, 2FA-bypass tokens lose direct publish (~Jan 2027):
+      // `npm publish` then only STAGES the release, and it goes public after a human
+      // approves it with 2FA on npmjs.com. We detect that by asking the registry for the
+      // version we just published, rather than hard-coding a token expiry date.
+      const pkg = JSON.parse( readFileSync( 'package.json', 'utf-8' ) );
+      const pkgPage = `https://www.npmjs.com/package/${pkg.name}`;
+      let published = true;
+      try {
+        run_command_sync_to_console( 'npm publish --access public' );
+      } catch ( err ) {
+        published = false;
+        console.log( `\n⚠  npm publish of ${pkg.name}@${pkg.version} FAILED (git commit/tag/push already succeeded).` );
+        console.log( '   E401/E404 usually means the npm token expired or was revoked. Create a new one at' );
+        console.log( '   https://www.npmjs.com/settings/moodboom/tokens (needs 2FA), then:' );
+        console.log( '     npm config set //registry.npmjs.org/:_authToken <new-token>' );
+        console.log( '   and republish with: gsv sync --force "republish"\n' );
+        process.exitCode = 1;
       }
-      run_command_sync_to_console( 'npm publish --access public' );
+      if ( published ) {
+        // npm view exits non-zero (E404) for a version that isn't public yet, e.g. a staged one.
+        let live = '';
+        try { live = run_command_sync( `npm view ${pkg.name}@${pkg.version} version 2>/dev/null` ).trim(); } catch ( err ) {}
+        if ( live === pkg.version ) {
+          console.log( `\n✓ ${pkg.name}@${pkg.version} is live on npm.\n` );
+        } else {
+          console.log( `\n⏳ ${pkg.name}@${pkg.version} was STAGED, not published.` );
+          console.log( `   Approve it with 2FA to make it public: ${pkgPage}\n` );
+        }
+      }
     }
     
     // Quietly reinstall, so we get any recently-made remote changes.

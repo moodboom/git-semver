@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
+7116be1 [34m 2 hours ago[0m git_sync: unpushed local commits no longer trip the nothing [31m5.1.2[0m [37m                     MDM [cast][0m
 4fa0e50 [34m 4 weeks ago[0m parse_tag_parameters: accept --patch as a no-op bump select [31m     [0m [37mMichael Behrns-Miller [abtdev1][0m
 8713f23 [34m 5 weeks ago[0m AGENTS.md: instruction file for the OpenCode harness (open- [31m     [0m [37m   Michael Behrns-Miller [glam][0m
 53ca1a5 [34m4 months ago[0m docs - default commit recipe to mh sp scoped, mh s reframed [31m5.1.1[0m [37m                     MDM [cast][0m
-a29de1d [34m7 months ago[0m Autofit columns of git-log and git-tag-list                 [31m5.1.0[0m [37m                     MDM [cast][0m
 
-Version 5.1.2
+Version 5.1.3
