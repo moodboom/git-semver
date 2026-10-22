@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { writeFileSync, readFileSync } from 'fs';
+import { execSync } from 'child_process';
 
 import { 
   run_command_sync_to_console, 
@@ -90,14 +91,26 @@ export const gsv = ( target, args ) => {
         process.exitCode = 1;
       }
       if ( published ) {
-        // npm view exits non-zero (E404) for a version that isn't public yet, e.g. a staged one.
-        let live = '';
-        try { live = run_command_sync( `npm view ${pkg.name}@${pkg.version} version 2>/dev/null` ).trim(); } catch ( err ) {}
-        if ( live === pkg.version ) {
+        // The registry can take a minute or more to list a fresh version (5.1.4 took ~70s on
+        // 2026-10-22), so poll before concluding. npm view exits non-zero (E404) for a version
+        // that isn't public yet, whether lagging or staged.
+        const isLive = () => {
+          try { return run_command_sync( `npm view ${pkg.name}@${pkg.version} version --prefer-online 2>/dev/null` ).trim() === pkg.version; }
+          catch ( err ) { return false; }
+        };
+        let live = isLive();
+        for ( let waited = 0; !live && waited < 180; waited += 15 ) {
+          if ( waited === 0 ) process.stdout.write( `Waiting for ${pkg.name}@${pkg.version} to appear on the registry` );
+          execSync( 'sleep 15' );
+          process.stdout.write( '.' );
+          live = isLive();
+        }
+        if ( live ) {
           console.log( `\n✓ ${pkg.name}@${pkg.version} is live on npm.\n` );
         } else {
-          console.log( `\n⏳ ${pkg.name}@${pkg.version} was STAGED, not published.` );
-          console.log( `   Approve it with 2FA to make it public: ${pkgPage}\n` );
+          console.log( `\n⏳ ${pkg.name}@${pkg.version} is not public after 3 minutes.` );
+          console.log( '   Most likely it was STAGED and needs approval with 2FA (npm bypass-token change, ~Jan 2027).' );
+          console.log( `   Check ${pkgPage} and approve it there if it is pending.\n` );
         }
       }
     }

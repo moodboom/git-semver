@@ -66,9 +66,9 @@ See https://bitpost.com/news for more bloviating.  Happy automating!  :-)
 
 
 Most recent commits...
-f09d138 [34m25 minutes ago[0m gsv sync: drop hard-coded npm token expiry; report failed [31m5.1.3[0m [37m                     MDM [cast][0m
+1bef012 [34m 7 minutes ago[0m republish after npm token renewal                         [31m5.1.4[0m [37m                     MDM [cast][0m
+f09d138 [34m32 minutes ago[0m gsv sync: drop hard-coded npm token expiry; report failed [31m5.1.3[0m [37m                     MDM [cast][0m
 7116be1 [34m   2 hours ago[0m git_sync: unpushed local commits no longer trip the nothi [31m5.1.2[0m [37m                     MDM [cast][0m
 4fa0e50 [34m   4 weeks ago[0m parse_tag_parameters: accept --patch as a no-op bump sele [31m     [0m [37mMichael Behrns-Miller [abtdev1][0m
-8713f23 [34m   5 weeks ago[0m AGENTS.md: instruction file for the OpenCode harness (ope [31m     [0m [37m   Michael Behrns-Miller [glam][0m
 
-Version 5.1.4
+Version 5.1.5
